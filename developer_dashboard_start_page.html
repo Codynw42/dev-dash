@@ -1,121 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dev Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Dashboard</title>
 
-  <style>
-    body {
-      margin: 0;
-      font-family: "Segoe UI", sans-serif;
-      color: #d1d5db;
-      background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') no-repeat center center fixed;
-      background-size: cover;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  color: #d1d5db;
+  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') no-repeat center center fixed;
+  background-size: cover;
+}
 
-    .overlay {
-      background: rgba(0,0,0,0.85);
-      min-height: 100vh;
-    }
+/* overlay */
+.overlay {
+  background: rgba(0,0,0,0.85);
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
 
-    h1 {
-      text-align: center;
-      padding-top: 20px;
-      color: #e5e7eb;
-    }
+h1 {
+  text-align: center;
+  padding-top: 20px;
+  color: #e5e7eb;
+}
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
 
-    .card {
-      background: rgba(20,20,20,0.9);
-      border-radius: 12px;
-      padding: 15px;
-      border: 1px solid #2a2a2a;
-      cursor: grab;
-    }
+/* cards */
+.card {
+  background: rgba(20,20,20,0.9);
+  border: 1px solid #333;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: grab;
+}
 
-    .card h2 {
-      margin-top: 0;
-      border-bottom: 1px solid #333;
-    }
+.card h2 {
+  margin-top: 0;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
 
-    a {
-      display: block;
-      color: #9ca3af;
-      margin: 5px 0;
-    }
+/* links */
+a {
+  display: block;
+  color: #9ca3af;
+  margin: 5px 0;
+  text-decoration: none;
+}
 
-    .hidden {
-      display: none;
-    }
-  </style>
+a:hover {
+  color: #fff;
+}
+
+/* inputs */
+textarea {
+  width: 100%;
+  height: 100px;
+  background: #111;
+  color: #ddd;
+  border: 1px solid #333;
+  border-radius: 6px;
+}
+
+/* checklist */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 6px 0;
+}
+
+/* command palette */
+#commandPalette {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  border: 1px solid #444;
+  padding: 10px;
+  display: none;
+}
+
+#commandInput {
+  width: 300px;
+  padding: 8px;
+  background: #000;
+  color: #fff;
+  border: 1px solid #555;
+}
+</style>
 </head>
 
 <body>
+
 <div class="overlay">
 
 <h1>🧠 Dev Dashboard</h1>
 
 <div class="grid" id="grid">
 
-  <div class="card" draggable="true">
+  <!-- CAREER -->
+  <div class="card">
     <h2>💼 Career</h2>
+    <a href="https://github.com/Codynw42" target="_blank">GitHub</a>
     <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
-    <a href="https://github.com/Codynw42" target="_blank">My GitHub</a>
+    <div id="repos"></div>
   </div>
 
-  <div class="card" draggable="true">
+  <!-- WEATHER -->
+  <div class="card">
     <h2>🌦 Weather</h2>
-    <p>Akron, OH</p>
-    <div id="weatherWidget"></div>
+    <div id="weather">
+      Loading weather...
+    </div>
   </div>
 
-  <div class="card" draggable="true">
-    <h2>🧩 Focus</h2>
-    <ul>
-      <li>Practice coding</li>
-      <li>Apply to jobs</li>
-      <li>Learn something new</li>
+  <!-- LEARNING -->
+  <div class="card">
+    <h2>📚 Learning</h2>
+    <a href="https://roadmap.sh" target="_blank">Roadmaps</a>
+    <a href="https://leetcode.com" target="_blank">LeetCode</a>
+    <a href="https://tryhackme.com" target="_blank">TryHackMe</a>
+    <a href="https://www.freecodecamp.org" target="_blank">FreeCodeCamp</a>
+  </div>
+
+  <!-- NOTES -->
+  <div class="card">
+    <h2>📝 Notes</h2>
+    <textarea id="notes"></textarea>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="card">
+    <h2>☑️ Focus</h2>
+    <ul id="checklist">
+      <li><input type="checkbox"> Code</li>
+      <li><input type="checkbox"> Apply</li>
+      <li><input type="checkbox"> Learn</li>
     </ul>
   </div>
 
+  <!-- TIMER -->
+  <div class="card">
+    <h2>⏱ Timer</h2>
+    <div id="timer">25:00</div>
+    <button onclick="startTimer()">Start</button>
+    <button onclick="resetTimer()">Reset</button>
+  </div>
+
 </div>
 
+</div>
+
+<!-- COMMAND PALETTE -->
+<div id="commandPalette">
+  <input id="commandInput" placeholder="Type a command..." />
 </div>
 
 <script>
-// Draggable cards
+
+/* =====================
+   NOTES (SAVE LOCAL)
+===================== */
+const notes = document.getElementById('notes');
+notes.value = localStorage.getItem('notes') || '';
+notes.addEventListener('input', () => {
+  localStorage.setItem('notes', notes.value);
+});
+
+/* =====================
+   CHECKLIST
+===================== */
+document.querySelectorAll('#checklist input').forEach((box, i) => {
+  box.checked = localStorage.getItem('task' + i) === 'true';
+  box.addEventListener('change', () => {
+    localStorage.setItem('task' + i, box.checked);
+  });
+});
+
+/* =====================
+   TIMER
+===================== */
+let time = 1500;
+let interval;
+
+function updateTimer() {
+  const m = Math.floor(time / 60);
+  const s = time % 60;
+  document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function startTimer() {
+  clearInterval(interval);
+  interval = setInterval(() => {
+    if (time > 0) {
+      time--;
+      updateTimer();
+    }
+  }, 1000);
+}
+
+function resetTimer() {
+  clearInterval(interval);
+  time = 1500;
+  updateTimer();
+}
+
+updateTimer();
+
+/* =====================
+   DRAG & DROP
+===================== */
 const cards = document.querySelectorAll('.card');
 cards.forEach(card => {
-  card.addEventListener('dragstart', () => card.classList.add('dragging'));
-  card.addEventListener('dragend', () => card.classList.remove('dragging'));
+  card.draggable = true;
 });
 
-const grid = document.getElementById('grid');
-grid.addEventListener('dragover', e => {
+let dragged;
+
+document.addEventListener('dragstart', e => {
+  if (e.target.classList.contains('card')) {
+    dragged = e.target;
+  }
+});
+
+document.addEventListener('dragover', e => {
   e.preventDefault();
-  const dragging = document.querySelector('.dragging');
-  grid.appendChild(dragging);
+  const after = [...document.querySelectorAll('.card')]
+    .find(card => e.clientY < card.getBoundingClientRect().top);
+  const grid = document.getElementById('grid');
+  if (after) {
+    grid.insertBefore(dragged, after);
+  } else {
+    grid.appendChild(dragged);
+  }
 });
 
-// Simple GitHub fetch
+/* =====================
+   GITHUB FETCH
+===================== */
 fetch('https://api.github.com/users/Codynw42/repos')
 .then(res => res.json())
 .then(data => {
-  const career = document.querySelector('.card');
+  const container = document.getElementById('repos');
   data.slice(0,5).forEach(repo => {
-    const link = document.createElement('a');
-    link.href = repo.html_url;
-    link.textContent = repo.name;
-    career.appendChild(link);
+    const a = document.createElement('a');
+    a.href = repo.html_url;
+    a.target = "_blank";
+    a.textContent = repo.name;
+    container.appendChild(a);
   });
 });
+
+/* =====================
+   SIMPLE WEATHER (fallback)
+   (we can upgrade to API later)
+===================== */
+document.getElementById('weather').innerText =
+"Akron, OH\nWeather API can be added next (OpenWeatherMap)";
+
+/* =====================
+   COMMAND PALETTE
+===================== */
+const palette = document.getElementById('commandPalette');
+const input = document.getElementById('commandInput');
+
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey && e.key === 'k') {
+    e.preventDefault();
+    palette.style.display = 'block';
+    input.focus();
+  }
+});
+
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    const cmd = input.value.toLowerCase();
+
+    if (cmd.includes('github')) {
+      window.open('https://github.com/Codynw42');
+    }
+
+    if (cmd.includes('leetcode')) {
+      window.open('https://leetcode.com');
+    }
+
+    palette.style.display = 'none';
+    input.value = '';
+  }
+});
+
 </script>
 
 </body>
