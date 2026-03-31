@@ -9,14 +9,19 @@
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background: #0a0a0a;
       color: #d1d5db;
+      background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .overlay {
+      background: rgba(0,0,0,0.85);
+      min-height: 100vh;
     }
 
     h1 {
       text-align: center;
-      margin-top: 20px;
-      font-weight: 500;
+      padding-top: 20px;
       color: #e5e7eb;
     }
 
@@ -28,195 +33,89 @@
     }
 
     .card {
-      background: linear-gradient(145deg, #111, #1a1a1a);
+      background: rgba(20,20,20,0.9);
       border-radius: 12px;
       padding: 15px;
       border: 1px solid #2a2a2a;
-      box-shadow: 0 0 10px rgba(255,255,255,0.03);
-      transition: 0.2s;
-    }
-
-    .card:hover {
-      transform: translateY(-3px);
-      border-color: #9ca3af;
+      cursor: grab;
     }
 
     .card h2 {
       margin-top: 0;
-      font-size: 18px;
-      border-bottom: 1px solid #2a2a2a;
-      padding-bottom: 5px;
-      color: #e5e7eb;
+      border-bottom: 1px solid #333;
     }
 
     a {
       display: block;
       color: #9ca3af;
-      text-decoration: none;
-      margin: 6px 0;
+      margin: 5px 0;
     }
 
-    a:hover {
-      color: #ffffff;
-      text-decoration: underline;
-    }
-
-    .checklist {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .checklist li {
-      margin: 6px 0;
-      cursor: pointer;
-    }
-
-    input {
-      margin-right: 8px;
-    }
-
-    textarea, input[type="text"] {
-      width: 100%;
-      background: #111;
-      border: 1px solid #333;
-      color: #d1d5db;
-      padding: 6px;
-      border-radius: 6px;
-    }
-
-    button {
-      margin-top: 5px;
-      padding: 6px 10px;
-      background: #1f2937;
-      color: #d1d5db;
-      border: 1px solid #444;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #374151;
-    }
-
-    .timer {
-      font-size: 24px;
-      text-align: center;
-      margin: 10px 0;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
 
 <body>
+<div class="overlay">
 
 <h1>🧠 Dev Dashboard</h1>
 
-<div class="grid">
+<div class="grid" id="grid">
 
-  <div class="card">
+  <div class="card" draggable="true">
     <h2>💼 Career</h2>
     <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
-    <a href="https://github.com" target="_blank">GitHub</a>
+    <a href="https://github.com/Codynw42" target="_blank">My GitHub</a>
   </div>
 
-  <div class="card">
-    <h2>📚 Learning</h2>
-    <a href="https://roadmap.sh" target="_blank">Roadmaps</a>
-    <a href="https://leetcode.com" target="_blank">LeetCode</a>
-    <a href="https://tryhackme.com" target="_blank">TryHackMe</a>
-    <a href="https://www.freecodecamp.org" target="_blank">FreeCodeCamp</a>
-    <a href="https://developer.mozilla.org" target="_blank">MDN Docs</a>
+  <div class="card" draggable="true">
+    <h2>🌦 Weather</h2>
+    <p>Akron, OH</p>
+    <div id="weatherWidget"></div>
   </div>
 
-  <div class="card">
-    <h2>⚙️ Tools</h2>
-    <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
-    <a href="https://git-scm.com/doc" target="_blank">Git Docs</a>
-    <a href="https://docs.python.org/3/" target="_blank">Python Docs</a>
-    <a href="https://nodejs.org/en/docs" target="_blank">Node.js Docs</a>
-  </div>
-
-  <div class="card">
-    <h2>🌐 Systems</h2>
-    <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>
-    <a href="https://www.linux.org" target="_blank">Linux</a>
-    <a href="https://www.cloudflare.com/learning/" target="_blank">Networking</a>
-  </div>
-
-  <div class="card">
-    <h2>🎥 Content</h2>
-    <a href="https://youtube.com" target="_blank">YouTube</a>
-    <a href="https://twitch.tv" target="_blank">Twitch</a>
-  </div>
-
-  <div class="card">
-    <h2>📝 Notes</h2>
-    <textarea id="notes" placeholder="Write your thoughts..."></textarea>
-  </div>
-
-  <div class="card">
-    <h2>📋 Checklist</h2>
-    <ul class="checklist" id="checklist">
-      <li><input type="checkbox"> Practice coding</li>
-      <li><input type="checkbox"> Review GitHub</li>
-      <li><input type="checkbox"> Learn something new</li>
-      <li><input type="checkbox"> Apply / network</li>
+  <div class="card" draggable="true">
+    <h2>🧩 Focus</h2>
+    <ul>
+      <li>Practice coding</li>
+      <li>Apply to jobs</li>
+      <li>Learn something new</li>
     </ul>
-  </div>
-
-  <div class="card">
-    <h2>⏱ Focus Timer</h2>
-    <div class="timer" id="timer">25:00</div>
-    <button onclick="startTimer()">Start</button>
-    <button onclick="resetTimer()">Reset</button>
   </div>
 
 </div>
 
+</div>
+
 <script>
-// Notes persistence
-const notes = document.getElementById('notes');
-notes.value = localStorage.getItem('notes') || '';
-notes.addEventListener('input', () => {
-  localStorage.setItem('notes', notes.value);
+// Draggable cards
+const cards = document.querySelectorAll('.card');
+cards.forEach(card => {
+  card.addEventListener('dragstart', () => card.classList.add('dragging'));
+  card.addEventListener('dragend', () => card.classList.remove('dragging'));
 });
 
-// Checklist persistence
-const checklist = document.querySelectorAll('#checklist input');
-checklist.forEach((box, i) => {
-  box.checked = localStorage.getItem('task' + i) === 'true';
-  box.addEventListener('change', () => {
-    localStorage.setItem('task' + i, box.checked);
+const grid = document.getElementById('grid');
+grid.addEventListener('dragover', e => {
+  e.preventDefault();
+  const dragging = document.querySelector('.dragging');
+  grid.appendChild(dragging);
+});
+
+// Simple GitHub fetch
+fetch('https://api.github.com/users/Codynw42/repos')
+.then(res => res.json())
+.then(data => {
+  const career = document.querySelector('.card');
+  data.slice(0,5).forEach(repo => {
+    const link = document.createElement('a');
+    link.href = repo.html_url;
+    link.textContent = repo.name;
+    career.appendChild(link);
   });
 });
-
-// Timer
-let time = 1500;
-let interval;
-
-function updateTimer() {
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  document.getElementById('timer').textContent =
-    `${minutes}:${seconds.toString().padStart(2, '0')}`;
-}
-
-function startTimer() {
-  clearInterval(interval);
-  interval = setInterval(() => {
-    if (time > 0) {
-      time--;
-      updateTimer();
-    }
-  }, 1000);
-}
-
-function resetTimer() {
-  clearInterval(interval);
-  time = 1500;
-  updateTimer();
-}
-
-updateTimer();
 </script>
 
 </body>
