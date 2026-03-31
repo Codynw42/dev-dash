@@ -1,309 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dev Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS • Codyn's Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap');
+        
+        :root {
+            --accent: #00f5ff;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+        
+        .title-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
 
-<style>
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  color: #d1d5db;
-  background: url('https://images.unsplash.com/photo-1518770660439-4636190af475') no-repeat center center fixed;
-  background-size: cover;
-}
+        .glass {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
 
-/* overlay */
-.overlay {
-  background: rgba(0,0,0,0.85);
-  min-height: 100vh;
-  padding-bottom: 40px;
-}
+        .neon-text {
+            text-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+        }
 
-h1 {
-  text-align: center;
-  padding-top: 20px;
-  color: #e5e7eb;
-}
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 25px -5px rgb(0 245 255);
+        }
 
-/* grid */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
-  padding: 20px;
-}
+        canvas#particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.6;
+        }
 
-/* cards */
-.card {
-  background: rgba(20,20,20,0.9);
-  border: 1px solid #333;
-  border-radius: 12px;
-  padding: 15px;
-  cursor: grab;
-}
-
-.card h2 {
-  margin-top: 0;
-  border-bottom: 1px solid #333;
-  padding-bottom: 5px;
-}
-
-/* links */
-a {
-  display: block;
-  color: #9ca3af;
-  margin: 5px 0;
-  text-decoration: none;
-}
-
-a:hover {
-  color: #fff;
-}
-
-/* inputs */
-textarea {
-  width: 100%;
-  height: 100px;
-  background: #111;
-  color: #ddd;
-  border: 1px solid #333;
-  border-radius: 6px;
-}
-
-/* checklist */
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-li {
-  margin: 6px 0;
-}
-
-/* command palette */
-#commandPalette {
-  position: fixed;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #111;
-  border: 1px solid #444;
-  padding: 10px;
-  display: none;
-}
-
-#commandInput {
-  width: 300px;
-  padding: 8px;
-  background: #000;
-  color: #fff;
-  border: 1px solid #555;
-}
-</style>
+        .terminal {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
 </head>
+<body class="bg-zinc-950 text-slate-200 min-h-screen overflow-x-hidden">
 
-<body>
+    <!-- Particles Background -->
+    <canvas id="particles" class="fixed inset-0 pointer-events-none"></canvas>
 
-<div class="overlay">
+    <div class="relative z-10 max-w-screen-2xl mx-auto p-6">
+        <!-- Header -->
+        <div class="flex items-center justify-between mb-8">
+            <div class="flex items-center gap-x-3">
+                <div class="w-10 h-10 bg-cyan-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-2xl shadow-lg shadow-cyan-500/50">N</div>
+                <div>
+                    <h1 class="title-font text-4xl tracking-tighter neon-text">NEXUS</h1>
+                    <p class="text-xs text-slate-400 -mt-1 tracking-[2px]">CODYN•DASH v2.0</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-x-8">
+                <div id="live-clock" class="font-mono text-xl font-medium"></div>
+                
+                <div onclick="toggleTerminal()" class="cursor-pointer flex items-center gap-x-2 bg-zinc-900 hover:bg-zinc-800 px-5 py-2.5 rounded-3xl border border-slate-700 hover:border-cyan-400 transition-all">
+                    <i class="fa-solid fa-terminal"></i>
+                    <span class="text-sm font-medium">TERMINAL</span>
+                </div>
 
-<h1>🧠 Dev Dashboard</h1>
+                <div class="flex items-center gap-x-2 bg-zinc-900 px-4 py-2 rounded-3xl border border-slate-700">
+                    <i class="fa-brands fa-github text-xl"></i>
+                    <a href="https://github.com/Codynw42" target="_blank" class="font-medium">@Codynw42</a>
+                </div>
 
-<div class="grid" id="grid">
+                <button onclick="toggleCommandPalette()" class="flex items-center gap-x-2 bg-zinc-900 hover:bg-emerald-500 hover:text-white px-6 py-3 rounded-3xl text-sm font-medium transition-colors">
+                    <i class="fa-solid fa-keyboard"></i>
+                    <span>CTRL + K</span>
+                </button>
+            </div>
+        </div>
 
-  <!-- CAREER -->
-  <div class="card">
-    <h2>💼 Career</h2>
-    <a href="https://github.com/Codynw42" target="_blank">GitHub</a>
-    <a href="https://www.linkedin.com" target="_blank">LinkedIn</a>
-    <div id="repos"></div>
-  </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
 
-  <!-- WEATHER -->
-  <div class="card">
-    <h2>🌦 Weather</h2>
-    <div id="weather">
-      Loading weather...
+            <!-- Profile Card -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 card-hover transition-all">
+                <div class="flex flex-col items-center text-center">
+                    <div id="github-avatar" class="w-24 h-24 rounded-2xl mb-4 border-2 border-cyan-400 overflow-hidden">
+                        <!-- JS filled -->
+                    </div>
+                    <h2 id="github-name" class="text-2xl font-semibold title-font">Loading...</h2>
+                    <p id="github-bio" class="text-slate-400 text-sm mt-1"></p>
+                    
+                    <div class="flex gap-6 mt-6 w-full">
+                        <div class="flex-1 text-center">
+                            <div id="github-followers" class="text-3xl font-mono font-bold text-cyan-400">0</div>
+                            <div class="text-xs tracking-widest text-slate-500">FOLLOWERS</div>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div id="github-repos" class="text-3xl font-mono font-bold text-cyan-400">0</div>
+                            <div class="text-xs tracking-widest text-slate-500">REPOS</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weather -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 card-hover">
+                <h3 class="flex items-center gap-2 text-lg mb-4"><i class="fa-solid fa-cloud-sun"></i> WEATHER</h3>
+                <div id="weather-widget" class="text-center">
+                    <div class="text-6xl mb-2" id="weather-emoji">⛅</div>
+                    <div id="weather-temp" class="text-5xl font-light font-mono">—°C</div>
+                    <div id="weather-desc" class="capitalize"></div>
+                    <div id="weather-location" class="text-xs text-slate-400 mt-6">AKRON, OH</div>
+                </div>
+            </div>
+
+            <!-- Live Timer / Pomodoro -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 flex flex-col card-hover">
+                <h3 class="flex items-center gap-2 text-lg mb-4"><i class="fa-solid fa-hourglass-half"></i> FOCUS MODE</h3>
+                <div id="pomo-display" class="text-7xl font-mono font-light text-center flex-1 flex items-center justify-center">25:00</div>
+                
+                <div class="flex gap-3 justify-center">
+                    <button onclick="startPomo()" class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white py-4 rounded-2xl font-medium">START</button>
+                    <button onclick="pausePomo()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-4 rounded-2xl font-medium">PAUSE</button>
+                    <button onclick="resetPomo()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 py-4 rounded-2xl font-medium">RESET</button>
+                </div>
+                <div class="flex justify-center gap-2 mt-4 text-xs">
+                    <button onclick="setPomoMode(25)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-cyan-900" id="mode-pomo">Pomo</button>
+                    <button onclick="setPomoMode(5)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-cyan-900" id="mode-short">Short</button>
+                    <button onclick="setPomoMode(15)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-cyan-900" id="mode-long">Long</button>
+                </div>
+            </div>
+
+            <!-- Todo List -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 flex flex-col card-hover">
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3 class="text-lg flex items-center gap-2"><i class="fa-solid fa-list-check"></i> MISSIONS</h3>
+                    <button onclick="addTodo()" class="text-cyan-400 hover:text-cyan-300"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div id="todo-list" class="flex-1 space-y-2 overflow-auto custom-scroll"></div>
+            </div>
+
+            <!-- GitHub Repos -->
+            <div class="md:col-span-5 glass rounded-3xl p-6 card-hover">
+                <h3 class="text-lg mb-4 flex items-center gap-2"><i class="fa-brands fa-github"></i> RECENT REPOS</h3>
+                <div id="repos-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
+            </div>
+
+            <!-- Notes -->
+            <div class="md:col-span-4 glass rounded-3xl p-6 card-hover flex flex-col">
+                <h3 class="text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-note-sticky"></i> NOTES</h3>
+                <textarea id="notes" class="flex-1 bg-zinc-900/70 border border-slate-700 focus:border-cyan-400 rounded-2xl p-4 resize-none text-slate-200 outline-none" placeholder="Write your thoughts..."></textarea>
+            </div>
+
+            <!-- Terminal -->
+            <div id="terminal-window" class="hidden fixed bottom-8 right-8 w-96 h-80 glass rounded-3xl shadow-2xl flex flex-col z-50 border border-cyan-400/30">
+                <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+                    <div class="flex items-center gap-x-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                    </div>
+                    <div class="text-xs font-mono text-slate-400">terminal@codyn-nexus</div>
+                    <i onclick="toggleTerminal()" class="fa-solid fa-xmark cursor-pointer"></i>
+                </div>
+                <div id="terminal-output" class="terminal flex-1 p-4 text-emerald-300 text-sm overflow-auto custom-scroll font-light leading-relaxed"></div>
+                <div class="flex border-t border-slate-700 px-4 py-3">
+                    <span class="text-emerald-400 mr-2">$</span>
+                    <input id="terminal-input" type="text" class="flex-1 bg-transparent outline-none text-slate-200 font-mono" placeholder="type command...">
+                </div>
+            </div>
+
+            <!-- Learning Links -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 card-hover">
+                <h3 class="text-lg mb-4">LEARNING PATH</h3>
+                <div class="space-y-3">
+                    <a href="https://roadmap.sh" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors">
+                        <i class="fa-solid fa-road text-cyan-400"></i>
+                        <span>Roadmap.sh</span>
+                    </a>
+                    <a href="https://leetcode.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors">
+                        <i class="fa-solid fa-code text-orange-400"></i>
+                        <span>LeetCode</span>
+                    </a>
+                    <a href="https://tryhackme.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors">
+                        <i class="fa-solid fa-shield-halved text-purple-400"></i>
+                        <span>TryHackMe</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 
-  <!-- LEARNING -->
-  <div class="card">
-    <h2>📚 Learning</h2>
-    <a href="https://roadmap.sh" target="_blank">Roadmaps</a>
-    <a href="https://leetcode.com" target="_blank">LeetCode</a>
-    <a href="https://tryhackme.com" target="_blank">TryHackMe</a>
-    <a href="https://www.freecodecamp.org" target="_blank">FreeCodeCamp</a>
-  </div>
-
-  <!-- NOTES -->
-  <div class="card">
-    <h2>📝 Notes</h2>
-    <textarea id="notes"></textarea>
-  </div>
-
-  <!-- CHECKLIST -->
-  <div class="card">
-    <h2>☑️ Focus</h2>
-    <ul id="checklist">
-      <li><input type="checkbox"> Code</li>
-      <li><input type="checkbox"> Apply</li>
-      <li><input type="checkbox"> Learn</li>
-    </ul>
-  </div>
-
-  <!-- TIMER -->
-  <div class="card">
-    <h2>⏱ Timer</h2>
-    <div id="timer">25:00</div>
-    <button onclick="startTimer()">Start</button>
-    <button onclick="resetTimer()">Reset</button>
-  </div>
-
-</div>
-
-</div>
-
-<!-- COMMAND PALETTE -->
-<div id="commandPalette">
-  <input id="commandInput" placeholder="Type a command..." />
-</div>
+    <!-- Command Palette -->
+    <div id="command-palette" class="hidden fixed inset-0 bg-black/70 flex items-start justify-center pt-32 z-[100]">
+        <div class="w-full max-w-xl glass rounded-3xl shadow-2xl">
+            <input id="command-input" type="text" class="w-full bg-transparent border-0 p-6 text-xl outline-none placeholder-slate-400" placeholder="Search commands or links..." autofocus>
+            <div id="command-results" class="max-h-96 overflow-auto px-4 pb-4"></div>
+        </div>
+    </div>
 
 <script>
+// Tailwind script init
+function initTailwind() {
+  return {
+    config(userConfig = {}) {
+      return {
+        content: [],
+        theme: {
+          extend: {},
+        },
+        plugins: [],
+        ...userConfig,
+      }
+    },
+    theme: {
+      extend: {},
+    },
+  }
+}
+document.documentElement.setAttribute('data-tailwind-config', JSON.stringify(initTailwind()))
 
-/* =====================
-   NOTES (SAVE LOCAL)
-===================== */
-const notes = document.getElementById('notes');
-notes.value = localStorage.getItem('notes') || '';
-notes.addEventListener('input', () => {
-  localStorage.setItem('notes', notes.value);
-});
+// Simple Particles Background
+const canvas = document.getElementById('particles');
+const ctx = canvas.getContext('2d');
 
-/* =====================
-   CHECKLIST
-===================== */
-document.querySelectorAll('#checklist input').forEach((box, i) => {
-  box.checked = localStorage.getItem('task' + i) === 'true';
-  box.addEventListener('change', () => {
-    localStorage.setItem('task' + i, box.checked);
-  });
-});
+let particlesArray = [];
+const numberOfParticles = 80;
 
-/* =====================
-   TIMER
-===================== */
-let time = 1500;
-let interval;
-
-function updateTimer() {
-  const m = Math.floor(time / 60);
-  const s = time % 60;
-  document.getElementById('timer').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = Math.random() * 0.5 - 0.25;
+    this.speedY = Math.random() * 0.5 - 0.25;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.fillStyle = '#00f5ff';
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
-function startTimer() {
-  clearInterval(interval);
-  interval = setInterval(() => {
-    if (time > 0) {
-      time--;
-      updateTimer();
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particlesArray = [];
+  for (let i = 0; i < numberOfParticles; i++) {
+    particlesArray.push(new Particle());
+  }
+}
+
+function connectParticles() {
+  for (let a = 0; a < particlesArray.length; a++) {
+    for (let b = a; b < particlesArray.length; b++) {
+      const dx = particlesArray[a].x - particlesArray[b].x;
+      const dy = particlesArray[a].y - particlesArray[b].y;
+      const distance = Math.sqrt(dx*dx + dy*dy);
+      
+      if (distance < 120) {
+        ctx.strokeStyle = `rgba(0, 245, 255, ${1 - distance/120})`;
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+        ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particlesArray.length; i++) {
+    particlesArray[i].update();
+    particlesArray[i].draw();
+  }
+  connectParticles();
+  requestAnimationFrame(animateParticles);
+}
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  initParticles();
+});
+
+// GitHub Integration
+async function fetchGitHub() {
+  try {
+    const userRes = await fetch('https://api.github.com/users/Codynw42');
+    const user = await userRes.json();
+    
+    document.getElementById('github-name').textContent = user.name || user.login;
+    document.getElementById('github-bio').textContent = user.bio || 'Developer & Builder';
+    document.getElementById('github-followers').textContent = user.followers;
+    document.getElementById('github-repos').textContent = user.public_repos;
+
+    // Avatar
+    const avatarDiv = document.getElementById('github-avatar');
+    avatarDiv.innerHTML = `<img src="${user.avatar_url}" class="w-full h-full object-cover">`;
+
+    // Repos
+    const reposRes = await fetch('https://api.github.com/users/Codynw42/repos?sort=updated&per_page=6');
+    const repos = await reposRes.json();
+    const container = document.getElementById('repos-list');
+    container.innerHTML = '';
+    
+    repos.forEach(repo => {
+      const div = document.createElement('a');
+      div.href = repo.html_url;
+      div.target = "_blank";
+      div.className = "block glass p-4 rounded-2xl hover:border-cyan-400 border border-transparent transition-colors";
+      div.innerHTML = `
+        <div class="font-medium">${repo.name}</div>
+        <div class="text-xs text-slate-400 line-clamp-2 mt-1">${repo.description || 'No description'}</div>
+        <div class="flex gap-x-4 text-[10px] mt-3 text-slate-400">
+          <div><i class="fa-solid fa-star"></i> ${repo.stargazers_count}</div>
+          <div class="capitalize">${repo.language || 'N/A'}</div>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  } catch(e) {
+    console.log("GitHub fetch failed", e);
+  }
+}
+
+// Weather - Open-Meteo
+async function fetchWeather() {
+  const lat = 41.08;
+  const lon = -81.52;
+  try {
+    const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=America/New_York`);
+    const data = await res.json();
+    
+    const temp = Math.round(data.current.temperature_2m);
+    const code = data.current.weather_code;
+    
+    let emoji = '☀️';
+    let desc = 'Clear';
+    
+    // Simple weather code mapping
+    if ([0,1].includes(code)) { emoji = '☀️'; desc = 'Clear'; }
+    else if ([2,3].includes(code)) { emoji = '☁️'; desc = 'Cloudy'; }
+    else if ([51,53,55,61,63,65,71,73,75,77,80,81,82,85,86].includes(code)) { emoji = '🌧️'; desc = 'Rain'; }
+    else if (code >= 95) { emoji = '⛈️'; desc = 'Thunderstorm'; }
+    
+    document.getElementById('weather-temp').textContent = `${temp}°C`;
+    document.getElementById('weather-emoji').textContent = emoji;
+    document.getElementById('weather-desc').textContent = desc;
+  } catch(e) {
+    document.getElementById('weather-temp').textContent = '—';
+  }
+}
+
+// Clock
+function updateClock() {
+  const clock = document.getElementById('live-clock');
+  setInterval(() => {
+    const now = new Date();
+    clock.textContent = now.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit', hour12: true});
+  }, 1000);
+}
+
+// Pomodoro
+let pomoTime = 25 * 60;
+let pomoInterval = null;
+let isRunning = false;
+let currentMode = 25;
+
+function updatePomoDisplay() {
+  const min = Math.floor(pomoTime / 60);
+  const sec = pomoTime % 60;
+  document.getElementById('pomo-display').textContent = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+}
+
+function startPomo() {
+  if (isRunning) return;
+  isRunning = true;
+  pomoInterval = setInterval(() => {
+    if (pomoTime > 0) {
+      pomoTime--;
+      updatePomoDisplay();
+    } else {
+      clearInterval(pomoInterval);
+      isRunning = false;
+      new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3').play().catch(()=>{});
+      alert("Session complete! Great work 🔥");
     }
   }, 1000);
 }
 
-function resetTimer() {
-  clearInterval(interval);
-  time = 1500;
-  updateTimer();
+function pausePomo() {
+  clearInterval(pomoInterval);
+  isRunning = false;
 }
 
-updateTimer();
+function resetPomo() {
+  clearInterval(pomoInterval);
+  isRunning = false;
+  pomoTime = currentMode * 60;
+  updatePomoDisplay();
+}
 
-/* =====================
-   DRAG & DROP
-===================== */
-const cards = document.querySelectorAll('.card');
-cards.forEach(card => {
-  card.draggable = true;
-});
+function setPomoMode(minutes) {
+  currentMode = minutes;
+  document.querySelectorAll('#terminal-window button, .flex.justify-center button').forEach(el => el.classList.remove('bg-cyan-500'));
+  resetPomo();
+}
 
-let dragged;
+// Todos
+let todos = JSON.parse(localStorage.getItem('todos')) || [];
 
-document.addEventListener('dragstart', e => {
-  if (e.target.classList.contains('card')) {
-    dragged = e.target;
-  }
-});
-
-document.addEventListener('dragover', e => {
-  e.preventDefault();
-  const after = [...document.querySelectorAll('.card')]
-    .find(card => e.clientY < card.getBoundingClientRect().top);
-  const grid = document.getElementById('grid');
-  if (after) {
-    grid.insertBefore(dragged, after);
-  } else {
-    grid.appendChild(dragged);
-  }
-});
-
-/* =====================
-   GITHUB FETCH
-===================== */
-fetch('https://api.github.com/users/Codynw42/repos')
-.then(res => res.json())
-.then(data => {
-  const container = document.getElementById('repos');
-  data.slice(0,5).forEach(repo => {
-    const a = document.createElement('a');
-    a.href = repo.html_url;
-    a.target = "_blank";
-    a.textContent = repo.name;
-    container.appendChild(a);
+function renderTodos() {
+  const container = document.getElementById('todo-list');
+  container.innerHTML = '';
+  todos.forEach((todo, i) => {
+    const div = document.createElement('div');
+    div.className = `flex items-center gap-3 bg-zinc-900/60 p-3 rounded-2xl ${todo.done ? 'opacity-60 line-through' : ''}`;
+    div.innerHTML = `
+      <input type="checkbox" ${todo.done ? 'checked' : ''} onchange="toggleTodo(${i})" class="accent-cyan-400">
+      <span class="flex-1">${todo.text}</span>
+      <button onclick="deleteTodo(${i})" class="text-red-400"><i class="fa-solid fa-trash"></i></button>
+    `;
+    container.appendChild(div);
   });
+}
+
+window.toggleTodo = function(i) {
+  todos[i].done = !todos[i].done;
+  localStorage.setItem('todos', JSON.stringify(todos));
+  renderTodos();
+}
+
+window.deleteTodo = function(i) {
+  todos.splice(i, 1);
+  localStorage.setItem('todos', JSON.stringify(todos));
+  renderTodos();
+}
+
+window.addTodo = function() {
+  const text = prompt("New mission:");
+  if (text && text.trim()) {
+    todos.push({text: text.trim(), done: false});
+    localStorage.setItem('todos', JSON.stringify(todos));
+    renderTodos();
+  }
+}
+
+// Notes
+const notesEl = document.getElementById('notes');
+notesEl.value = localStorage.getItem('notes') || '';
+notesEl.addEventListener('input', () => {
+  localStorage.setItem('notes', notesEl.value);
 });
 
-/* =====================
-   SIMPLE WEATHER (fallback)
-   (we can upgrade to API later)
-===================== */
-document.getElementById('weather').innerText =
-"Akron, OH\nWeather API can be added next (OpenWeatherMap)";
+// Mini Terminal
+const terminalOutput = document.getElementById('terminal-output');
+const terminalInput = document.getElementById('terminal-input');
 
-/* =====================
-   COMMAND PALETTE
-===================== */
-const palette = document.getElementById('commandPalette');
-const input = document.getElementById('commandInput');
+function printToTerminal(text, color = 'text-emerald-300') {
+  const line = document.createElement('div');
+  line.className = color;
+  line.textContent = text;
+  terminalOutput.appendChild(line);
+  terminalOutput.scrollTop = terminalOutput.scrollHeight;
+}
 
-document.addEventListener('keydown', e => {
+function toggleTerminal() {
+  const term = document.getElementById('terminal-window');
+  term.classList.toggle('hidden');
+  if (!term.classList.contains('hidden')) {
+    terminalInput.focus();
+  }
+}
+
+terminalInput.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    const cmd = this.value.trim();
+    printToTerminal(`$ ${cmd}`);
+    
+    if (cmd === 'help') {
+      printToTerminal('Available: clear, whoami, github, weather, time, motivation', 'text-cyan-300');
+    } else if (cmd === 'clear') {
+      terminalOutput.innerHTML = '';
+    } else if (cmd === 'whoami') {
+      printToTerminal('You are Codyn — builder of cool shit.', 'text-violet-300');
+    } else if (cmd === 'github') {
+      window.open('https://github.com/Codynw42', '_blank');
+      printToTerminal('Opening GitHub...', 'text-cyan-300');
+    } else if (cmd === 'weather') {
+      printToTerminal('Check the weather widget above ☀️', 'text-amber-300');
+    } else if (cmd === 'time') {
+      printToTerminal(new Date().toLocaleString());
+    } else if (cmd === 'motivation') {
+      const quotes = ["The only way to do great work is to love what you do.", "Build in public.", "Ship fast, learn faster."];
+      printToTerminal(quotes[Math.floor(Math.random()*quotes.length)], 'text-amber-300');
+    } else if (cmd) {
+      printToTerminal('Command not found. Try "help"', 'text-red-400');
+    }
+    this.value = '';
+  }
+});
+
+// Command Palette
+let commands = [
+  {name: "Open GitHub", action: () => window.open('https://github.com/Codynw42', '_blank')},
+  {name: "Open LeetCode", action: () => window.open('https://leetcode.com', '_blank')},
+  {name: "Open TryHackMe", action: () => window.open('https://tryhackme.com', '_blank')},
+  {name: "Show Terminal", action: toggleTerminal},
+];
+
+function toggleCommandPalette() {
+  const palette = document.getElementById('command-palette');
+  palette.classList.toggle('hidden');
+  if (!palette.classList.contains('hidden')) {
+    document.getElementById('command-input').focus();
+  }
+}
+
+document.getElementById('command-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    document.getElementById('command-palette').classList.add('hidden');
+  }
+  if (e.key === 'Enter') {
+    // Simple filter + execute first match
+    const query = this.value.toLowerCase().trim();
+    const match = commands.find(c => c.name.toLowerCase().includes(query));
+    if (match) match.action();
+    document.getElementById('command-palette').classList.add('hidden');
+    this.value = '';
+  }
+});
+
+// Drag and drop support for cards if needed (optional extension)
+
+// Keyboard shortcut for command palette
+document.addEventListener('keydown', function(e) {
   if (e.ctrlKey && e.key === 'k') {
     e.preventDefault();
-    palette.style.display = 'block';
-    input.focus();
+    toggleCommandPalette();
   }
 });
 
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    const cmd = input.value.toLowerCase();
-
-    if (cmd.includes('github')) {
-      window.open('https://github.com/Codynw42');
-    }
-
-    if (cmd.includes('leetcode')) {
-      window.open('https://leetcode.com');
-    }
-
-    palette.style.display = 'none';
-    input.value = '';
-  }
-});
-
+// Initialize everything
+window.onload = function() {
+  resizeCanvas();
+  initParticles();
+  animateParticles();
+  
+  fetchGitHub();
+  fetchWeather();
+  updateClock();
+  renderTodos();
+  updatePomoDisplay();
+  
+  // Console greeting
+  console.log('%c🚀 NEXUS Dashboard initialized successfully', 'color:#00f5ff; font-family:monospace');
+}
 </script>
-
 </body>
 </html>
