@@ -1,49 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My Dev Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Dashboard</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
+      font-family: "Segoe UI", sans-serif;
+      background: #0b0f19;
+      color: #e6edf3;
     }
 
     h1 {
       text-align: center;
       margin-top: 20px;
+      font-weight: 500;
     }
 
-    .container {
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 20px;
       padding: 20px;
     }
 
     .card {
-      background: #1e293b;
+      background: #161b22;
       border-radius: 12px;
       padding: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: 0.2s;
+      border: 1px solid #222b3a;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      border-color: #3b82f6;
     }
 
     .card h2 {
       margin-top: 0;
       font-size: 18px;
-      border-bottom: 1px solid #334155;
+      border-bottom: 1px solid #222b3a;
       padding-bottom: 5px;
     }
 
     a {
       display: block;
-      color: #38bdf8;
+      color: #58a6ff;
       text-decoration: none;
-      margin: 8px 0;
-      font-size: 15px;
+      margin: 6px 0;
     }
 
     a:hover {
@@ -56,19 +63,20 @@
     }
 
     .checklist li {
-      margin: 8px 0;
+      margin: 6px 0;
     }
 
-    input[type="checkbox"] {
+    input {
       margin-right: 8px;
     }
   </style>
 </head>
+
 <body>
 
-  <h1>🧠 My Dev Dashboard</h1>
+  <h1>🧠 Dev Dashboard</h1>
 
-  <div class="container">
+  <div class="grid">
 
     <div class="card">
       <h2>💼 Career</h2>
@@ -78,21 +86,37 @@
 
     <div class="card">
       <h2>📚 Learning</h2>
-      <a href="https://roadmap.sh" target="_blank">Dev Roadmap</a>
+      <a href="https://roadmap.sh" target="_blank">Developer Roadmaps</a>
       <a href="https://leetcode.com" target="_blank">LeetCode</a>
       <a href="https://tryhackme.com" target="_blank">TryHackMe</a>
+      <a href="https://www.freecodecamp.org" target="_blank">FreeCodeCamp</a>
+      <a href="https://developer.mozilla.org" target="_blank">MDN Docs</a>
     </div>
 
     <div class="card">
-      <h2>🎥 Content / Resources</h2>
+      <h2>⚙️ Dev Tools</h2>
+      <a href="https://code.visualstudio.com/" target="_blank">VS Code</a>
+      <a href="https://git-scm.com/doc" target="_blank">Git Docs</a>
+      <a href="https://docs.python.org/3/" target="_blank">Python Docs</a>
+      <a href="https://nodejs.org/en/docs" target="_blank">Node.js Docs</a>
+    </div>
+
+    <div class="card">
+      <h2>🌐 Networking & Systems</h2>
+      <a href="https://www.cloudflare.com/learning/" target="_blank">Networking Basics</a>
+      <a href="https://wiki.archlinux.org/" target="_blank">Arch Wiki</a>
+      <a href="https://www.linux.org/pages/download/" target="_blank">Linux Resources</a>
+    </div>
+
+    <div class="card">
+      <h2>🎥 Content</h2>
       <a href="https://youtube.com" target="_blank">YouTube</a>
       <a href="https://twitch.tv" target="_blank">Twitch</a>
     </div>
 
     <div class="card">
-      <h2>⚙️ Daily Checklist</h2>
+      <h2>🧩 Daily Focus</h2>
       <ul class="checklist">
-        <li><input type="checkbox"> Check LinkedIn</li>
         <li><input type="checkbox"> Practice coding</li>
         <li><input type="checkbox"> Review GitHub</li>
         <li><input type="checkbox"> Learn something new</li>
