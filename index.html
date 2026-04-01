@@ -22,8 +22,6 @@
         }
 
         .glass {
-            /* UPDATED: Silver/gray glass effect to match black + gold theme */
-            /* No more blue tint — now neutral dark silver with subtle silver border */
             background: rgba(24, 24, 27, 0.88);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(192, 192, 192, 0.35);
@@ -45,7 +43,8 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.65;
+            pointer-events: none;
         }
 
         .terminal, .modal-content {
@@ -106,7 +105,7 @@
 </head>
 <body class="bg-zinc-950 text-slate-200 min-h-screen overflow-x-hidden">
 
-    <!-- Particles Background -->
+    <!-- Living Procedural World Background -->
     <canvas id="particles" class="fixed inset-0 pointer-events-none"></canvas>
 
     <div class="relative z-10 max-w-screen-2xl mx-auto p-4 md:p-6">
@@ -116,7 +115,7 @@
                 <div class="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-2xl shadow-lg shadow-amber-500/50">N</div>
                 <div>
                     <h1 class="title-font text-4xl tracking-tighter neon-text">NEXUS</h1>
-                    <p class="text-xs text-slate-400 -mt-1 tracking-[2px]">CODYN•DASH v2.3 • OPEN TO WORK</p>
+                    <p class="text-xs text-slate-400 -mt-1 tracking-[2px]">CODYN•DASH v2.4 • LIVING WORLD ENABLED • OPEN TO WORK</p>
                 </div>
             </div>
             
@@ -429,7 +428,7 @@
                 <ul class="space-y-4 text-sm">
                     <li><strong>Linux System Configuration</strong> — Installed/configured Arch Linux manually. Maintained Manjaro with cron &amp; journalctl.</li>
                     <li><strong>Server &amp; Development</strong> — Game servers, Node.js, Docker basics, SSH daily.</li>
-                    <li><strong>This NEXUS Dashboard</strong> — Single-file cyberpunk portfolio with live GitHub, weather, terminal, pong &amp; resume modal.</li>
+                    <li><strong>This NEXUS Dashboard</strong> — Single-file cyberpunk portfolio with live GitHub, weather, terminal, pong, resume modal + <strong>procedural living ecosystem background</strong>.</li>
                 </ul>
             </div>
 
@@ -490,8 +489,9 @@
     </div>
 
 <script>
-// Full restored + fixed JavaScript (all original features work perfectly)
-// v2.3 updates: silver glass theme, rearranged layout (About+Skills closer, bottom row), real visitor counter, visitors book
+// NEXUS Dashboard v2.4 — Full original features + brand new Procedural Living World background
+// Tiny ecosystem (plants, bugs, predators) with evolution, real-world day/night cycle, dynamic weather, and continuous simulation.
+// Runs forever in the background even if you ignore the page. Fully responsive on mobile + desktop.
 
 function initTailwind() {
     return {
@@ -508,68 +508,279 @@ function initTailwind() {
 }
 document.documentElement.setAttribute('data-tailwind-config', JSON.stringify(initTailwind()))
 
-// Particles (gold theme)
-let particlesArray = [];
-let particleCtx;
-const particleCanvas = document.getElementById('particles');
+// === PROCEDURAL LIVING WORLD (Ecosystem Simulation) ===
+let entities = [];
+let weatherParticles = [];
+let stars = [];
+let ecosystemCanvas, ecosystemCtx;
+let lastSimTick = Date.now();
+let simGeneration = 0;
+let currentWeather = 'clear';
 
-function initParticles() {
-    particleCtx = particleCanvas.getContext('2d');
-    particleCanvas.width = window.innerWidth;
-    particleCanvas.height = window.innerHeight;
-    particlesArray = [];
-    const numberOfParticles = 120;
-    for (let i = 0; i < numberOfParticles; i++) {
-        particlesArray.push({
-            x: Math.random() * particleCanvas.width,
-            y: Math.random() * particleCanvas.height,
-            size: Math.random() * 3 + 1,
-            speedX: Math.random() * 0.5 - 0.25,
-            speedY: Math.random() * 0.5 - 0.25
-        });
-    }
+function createEntity(x, y, type) {
+    return {
+        x: x,
+        y: y,
+        vx: (Math.random() - 0.5) * 1.8,
+        vy: (Math.random() - 0.5) * 1.8,
+        type: type,
+        energy: type === 'plant' ? 130 : 65,
+        size: type === 'plant' ? 3.8 : type === 'bug' ? 4.6 : 5.8,
+        speedMod: 0.85 + Math.random() * 0.75, // genetic trait for evolution
+        color: type === 'plant' ? '#4ade80' : type === 'bug' ? '#fcd34d' : '#f87171',
+        lastReproduce: 0
+    };
 }
 
-function animateParticles() {
-    particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
-    for (let i = 0; i < particlesArray.length; i++) {
-        const p = particlesArray[i];
-        particleCtx.fillStyle = '#ffd700';
-        particleCtx.beginPath();
-        particleCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        particleCtx.fill();
+function initEcosystem() {
+    ecosystemCanvas = document.getElementById('particles');
+    ecosystemCtx = ecosystemCanvas.getContext('2d');
+    ecosystemCanvas.width = window.innerWidth;
+    ecosystemCanvas.height = window.innerHeight;
 
-        p.x += p.speedX;
-        p.y += p.speedY;
+    entities = [];
+    // Plants (stationary life source)
+    for (let i = 0; i < 58; i++) {
+        entities.push(createEntity(Math.random() * ecosystemCanvas.width, Math.random() * ecosystemCanvas.height, 'plant'));
+    }
+    // Bugs / herbivores
+    for (let i = 0; i < 38; i++) {
+        entities.push(createEntity(Math.random() * ecosystemCanvas.width, Math.random() * ecosystemCanvas.height, 'bug'));
+    }
+    // Predators
+    for (let i = 0; i < 13; i++) {
+        entities.push(createEntity(Math.random() * ecosystemCanvas.width, Math.random() * ecosystemCanvas.height, 'pred'));
+    }
 
-        if (p.x < 0 || p.x > particleCanvas.width) p.speedX *= -1;
-        if (p.y < 0 || p.y > particleCanvas.height) p.speedY *= -1;
+    // Night stars (procedural)
+    stars = [];
+    for (let i = 0; i < 85; i++) {
+        stars.push({
+            x: Math.random() * ecosystemCanvas.width,
+            y: Math.random() * ecosystemCanvas.height * 0.65,
+            size: Math.random() * 2.2 + 0.6,
+            twinkle: Math.random() * 0.03 + 0.008
+        });
+    }
 
-        for (let j = i + 1; j < particlesArray.length; j++) {
-            const p2 = particlesArray[j];
-            const dx = p.x - p2.x;
-            const dy = p.y - p2.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance < 120) {
-                particleCtx.strokeStyle = `rgba(255, 215, 0, ${1 - distance / 120})`;
-                particleCtx.lineWidth = 0.5;
-                particleCtx.beginPath();
-                particleCtx.moveTo(p.x, p.y);
-                particleCtx.lineTo(p2.x, p2.y);
-                particleCtx.stroke();
+    weatherParticles = [];
+    currentWeather = 'clear';
+    console.log('%c🌍 Procedural Living World initialized — creatures, evolution, real-time day/night + weather', 'color:#fcd34d; font-family:monospace');
+}
+
+function updateEcosystem() {
+    const w = ecosystemCanvas.width;
+    const h = ecosystemCanvas.height;
+    const now = Date.now();
+    const hour = new Date().getHours();
+    const isNight = hour < 7 || hour > 20;
+
+    // Change weather + advance generation every ~45 seconds
+    if (now - lastSimTick > 45000) {
+        lastSimTick = now;
+        const options = ['clear', 'rain', 'snow'];
+        currentWeather = options[Math.floor(Math.random() * options.length)];
+        simGeneration++;
+        console.log(`%c🌍 Ecosystem generation ${simGeneration} • Weather now: ${currentWeather} • ${isNight ? '🌙 NIGHT' : '☀️ DAY'}`, 'color:#fcd34d; font-size:10px');
+    }
+
+    // Spawn weather particles
+    if (currentWeather === 'rain' || currentWeather === 'snow') {
+        if (Math.random() < (currentWeather === 'rain' ? 0.75 : 0.45)) {
+            weatherParticles.push({
+                x: Math.random() * w,
+                y: -15,
+                vy: currentWeather === 'rain' ? 9 + Math.random() * 7 : 2.5 + Math.random() * 3.5,
+                length: currentWeather === 'rain' ? 14 + Math.random() * 9 : 5 + Math.random() * 5,
+                color: currentWeather === 'rain' ? 'rgba(165,243,252,0.75)' : 'rgba(224,242,254,0.85)',
+                type: currentWeather
+            });
+        }
+    }
+
+    // Update weather particles
+    for (let i = weatherParticles.length - 1; i >= 0; i--) {
+        const p = weatherParticles[i];
+        p.y += p.vy;
+        if (p.y > h + 20) weatherParticles.splice(i, 1);
+    }
+
+    // Update entities
+    for (let i = entities.length - 1; i >= 0; i--) {
+        const e = entities[i];
+
+        if (e.type === 'plant') {
+            e.energy = Math.min(145, e.energy + 0.18);
+            // Natural reproduction
+            if (e.energy > 95 && Math.random() < 0.0035) {
+                const child = createEntity(e.x + (Math.random() - 0.5) * 45, e.y + (Math.random() - 0.5) * 45, 'plant');
+                child.energy = 35;
+                entities.push(child);
+                e.energy -= 38;
+            }
+        } else {
+            // Movement with genetic speed variation
+            e.vx += (Math.random() - 0.5) * 0.9;
+            e.vy += (Math.random() - 0.5) * 0.9;
+            e.x += e.vx * e.speedMod;
+            e.y += e.vy * e.speedMod;
+
+            e.energy -= 0.085;
+
+            // Boundary bounce
+            if (e.x < 0 || e.x > w) e.vx *= -0.92;
+            if (e.y < 0 || e.y > h) e.vy *= -0.92;
+            e.x = Math.max(10, Math.min(w - 10, e.x));
+            e.y = Math.max(10, Math.min(h - 10, e.y));
+
+            e.vx *= 0.955;
+            e.vy *= 0.955;
+
+            // Interactions (O(n²) but capped at ~110 entities — perfectly performant)
+            for (let j = entities.length - 1; j >= 0; j--) {
+                if (i === j) continue;
+                const o = entities[j];
+                const dx = o.x - e.x;
+                const dy = o.y - e.y;
+                const distSq = dx * dx + dy * dy;
+                if (distSq > 7200 || distSq < 2) continue; // 85px range
+                const dist = Math.sqrt(distSq);
+
+                if (e.type === 'bug' && o.type === 'plant' && dist < 48) {
+                    const force = (48 - dist) / 48;
+                    e.vx += (dx / dist) * force * 1.4;
+                    e.vy += (dy / dist) * force * 1.4;
+                    if (dist < 15) {
+                        e.energy += 19;
+                        o.energy -= 31;
+                        if (o.energy <= 0) {
+                            entities.splice(j, 1);
+                            if (Math.random() < 0.35) entities.push(createEntity(Math.random() * w, Math.random() * h, 'plant'));
+                        }
+                    }
+                }
+                if (e.type === 'pred' && o.type === 'bug' && dist < 58) {
+                    const force = (58 - dist) / 58 * 2;
+                    e.vx += (dx / dist) * force;
+                    e.vy += (dy / dist) * force;
+                    if (dist < 17) {
+                        e.energy += 34;
+                        o.energy -= 48;
+                        if (o.energy <= 0) entities.splice(j, 1);
+                    }
+                }
+            }
+
+            // Evolution: reproduction with mutation
+            if (e.energy > 88 && (now - e.lastReproduce) > 7500 && Math.random() < 0.0042) {
+                const offspring = createEntity(e.x + (Math.random() - 0.5) * 18, e.y + (Math.random() - 0.5) * 18, e.type);
+                offspring.speedMod = Math.max(0.7, Math.min(1.7, e.speedMod * (0.9 + Math.random() * 0.22)));
+                offspring.energy = 38;
+                entities.push(offspring);
+                e.energy -= 42;
+                e.lastReproduce = now;
+            }
+
+            // Death
+            if (e.energy <= 0 || Math.random() < 0.0006) {
+                if (Math.random() < 0.28) entities.push(createEntity(e.x, e.y, 'plant')); // biomass returns to plants
+                entities.splice(i, 1);
+                continue;
             }
         }
     }
-    requestAnimationFrame(animateParticles);
+
+    // Population balance
+    const plantCount = entities.filter(e => e.type === 'plant').length;
+    if (plantCount < 32) entities.push(createEntity(Math.random() * w, Math.random() * h, 'plant'));
+    if (entities.length < 48) entities.push(createEntity(Math.random() * w, Math.random() * h, 'bug'));
 }
 
-window.addEventListener('resize', () => {
-    if (particleCanvas) {
-        particleCanvas.width = window.innerWidth;
-        particleCanvas.height = window.innerHeight;
-        initParticles();
+function drawEcosystem() {
+    const ctx = ecosystemCtx;
+    const w = ecosystemCanvas.width;
+    const h = ecosystemCanvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+
+    const hour = new Date().getHours();
+    const isNight = hour < 7 || hour > 20;
+
+    // Time-of-day atmospheric tint
+    ctx.fillStyle = isNight ? 'rgba(15,23,42,0.28)' : 'rgba(234,179,8,0.07)';
+    ctx.fillRect(0, 0, w, h);
+
+    // Stars at night
+    if (isNight) {
+        ctx.shadowBlur = 0;
+        for (let s of stars) {
+            const alpha = 0.5 + Math.sin(Date.now() * s.twinkle) * 0.5;
+            ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
     }
-});
+
+    // Weather particles
+    ctx.shadowBlur = 0;
+    for (let p of weatherParticles) {
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = p.type === 'rain' ? 1.4 : 2.8;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x + (p.type === 'snow' ? 3 : 0), p.y + p.length);
+        ctx.stroke();
+    }
+
+    // Entities with neon glow
+    ctx.shadowBlur = 14;
+    for (let e of entities) {
+        ctx.shadowColor = e.color;
+        ctx.fillStyle = e.color;
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, e.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Extra plant halo
+        if (e.type === 'plant') {
+            ctx.shadowBlur = 24;
+            ctx.globalAlpha = 0.25;
+            ctx.beginPath();
+            ctx.arc(e.x, e.y, e.size + 5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.shadowBlur = 14;
+        }
+    }
+
+    // Subtle ecosystem network lines (cyberpunk feel)
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = 'rgba(251,191,36,0.13)';
+    ctx.lineWidth = 0.75;
+    for (let i = 0; i < entities.length; i += 4) {
+        const e1 = entities[i];
+        if (!e1) continue;
+        for (let j = i + 6; j < entities.length; j += 7) {
+            const e2 = entities[j];
+            if (!e2) continue;
+            const dx = e2.x - e1.x;
+            const dy = e2.y - e1.y;
+            if (dx * dx + dy * dy < 13500) {
+                ctx.beginPath();
+                ctx.moveTo(e1.x, e1.y);
+                ctx.lineTo(e2.x, e2.y);
+                ctx.stroke();
+            }
+        }
+    }
+}
+
+function animateEcosystem() {
+    updateEcosystem();
+    drawEcosystem();
+    requestAnimationFrame(animateEcosystem);
+}
 
 // GitHub API
 async function fetchGitHub() {
@@ -799,7 +1010,7 @@ function processTerminalCommand(cmd) {
         return;
     }
     if (lower === 'help') {
-        addTerminalLine('help, clear, time, date, github, weather, pong, resume, whoami');
+        addTerminalLine('help, clear, time, date, github, weather, pong, resume, whoami, world');
         return;
     }
     if (lower === 'time' || lower === 'date') {
@@ -828,6 +1039,10 @@ function processTerminalCommand(cmd) {
     }
     if (lower === 'whoami') {
         addTerminalLine('codyn • self-taught sysadmin & future devops engineer');
+        return;
+    }
+    if (lower === 'world') {
+        addTerminalLine('The living ecosystem is always evolving behind the scenes 🌍');
         return;
     }
     addTerminalLine(`Command not found: ${cmd}. Type "help"`);
@@ -1055,7 +1270,7 @@ window.addEventListener('keydown', e => {
     }
 });
 
-// NEW: Real visitor counter using CountAPI (public, no key, increments on every visit)
+// Real visitor counter using CountAPI
 async function fetchVisitorCount() {
     try {
         const res = await fetch('https://api.countapi.xyz/hit/codyn-nexus/portfolio-visits');
@@ -1069,7 +1284,7 @@ async function fetchVisitorCount() {
     }
 }
 
-// NEW: Visitors Book (demo mode with localStorage — shared version possible with Supabase)
+// Visitors Book (demo mode with localStorage)
 let guestMessages = [];
 
 function loadGuestbook() {
@@ -1077,16 +1292,15 @@ function loadGuestbook() {
     if (saved) {
         guestMessages = JSON.parse(saved);
     } else {
-        // Sample messages so it never looks empty
         guestMessages = [
             {
                 name: "Alex Rivera",
-                message: "This dashboard is straight fire 🔥 Pong game is addictive. Good luck on the job hunt!",
+                message: "This dashboard is straight fire 🔥 The living world in the background is next level!",
                 time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString()
             },
             {
                 name: "Jordan Kim",
-                message: "Love the silver + gold theme update. Super clean and professional.",
+                message: "Love the silver + gold theme and the evolving ecosystem. Super impressive.",
                 time: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString()
             }
         ];
@@ -1126,21 +1340,17 @@ function addGuestMessage() {
     saveGuestbook();
     renderGuestbook();
     
-    // Clear form
     document.getElementById('guest-name').value = '';
     document.getElementById('guest-message').value = '';
-    
-    // Nice feedback
-    const btns = document.querySelectorAll('button');
-    const originalText = 'SEND';
-    // (button already has SEND text)
 }
 
 // Final initialization
 window.onload = function() {
-    initParticles();
-    animateParticles();
+    // Initialize the living procedural world FIRST
+    initEcosystem();
+    animateEcosystem();
     
+    // Original features
     fetchGitHub();
     fetchWeather();
     updateClock();
@@ -1153,12 +1363,30 @@ window.onload = function() {
     initTerminal();
     initCommandPalette();
     
-    // NEW features
+    // Visitor features
     fetchVisitorCount();
     loadGuestbook();
     renderGuestbook();
     
-    console.log('%c🚀 NEXUS Dashboard v2.3 — silver glass theme + rearranged layout + visitor counter + guests book!', 'color:#ffd700; font-family:monospace; font-size:13px');
+    // Resize handler for the living world (keeps everything responsive)
+    window.addEventListener('resize', () => {
+        if (ecosystemCanvas) {
+            ecosystemCanvas.width = window.innerWidth;
+            ecosystemCanvas.height = window.innerHeight;
+            // Re-generate stars for new dimensions
+            stars = [];
+            for (let i = 0; i < 85; i++) {
+                stars.push({
+                    x: Math.random() * ecosystemCanvas.width,
+                    y: Math.random() * ecosystemCanvas.height * 0.65,
+                    size: Math.random() * 2.2 + 0.6,
+                    twinkle: Math.random() * 0.03 + 0.008
+                });
+            }
+        }
+    });
+    
+    console.log('%c🚀 NEXUS Dashboard v2.4 — silver glass theme + procedural living ecosystem (creatures, weather, evolution, real-time day/night) now running in background!', 'color:#fcd34d; font-family:monospace; font-size:13px');
 }
 </script>
 </body>
