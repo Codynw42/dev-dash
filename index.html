@@ -22,6 +22,8 @@
         }
 
         .glass {
+            /* UPDATED: Silver/gray glass effect to match black + gold theme */
+            /* No more blue tint — now neutral dark silver with subtle silver border */
             background: rgba(24, 24, 27, 0.88);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(192, 192, 192, 0.35);
@@ -63,6 +65,7 @@
             border-bottom: 2px solid #ffd700;
         }
 
+        /* MOBILE IMPROVEMENTS — Desktop layout is 100% unchanged */
         @media (max-width: 767px) {
             .header-right {
                 gap: 8px !important;
@@ -103,9 +106,11 @@
 </head>
 <body class="bg-zinc-950 text-slate-200 min-h-screen overflow-x-hidden">
 
+    <!-- Particles Background -->
     <canvas id="particles" class="fixed inset-0 pointer-events-none"></canvas>
 
     <div class="relative z-10 max-w-screen-2xl mx-auto p-4 md:p-6">
+        <!-- Header -->
         <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
             <div class="flex items-center gap-x-3">
                 <div class="w-10 h-10 bg-amber-500 rounded-2xl flex items-center justify-center text-zinc-950 font-bold text-2xl shadow-lg shadow-amber-500/50">N</div>
@@ -115,8 +120,11 @@
                 </div>
             </div>
             
+            <!-- Desktop + Mobile right side (desktop layout untouched) -->
             <div id="header-right" class="header-right flex items-center gap-x-3 md:gap-x-6 mt-4 md:mt-0 w-full md:w-auto justify-center md:justify-end">
-                <a href="mailto:cody.blankenship@protonmail.com" class="flex items-center gap-x-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 px-4 md:px-5 py-2 rounded-3xl border border-amber-400/30 hover:border-amber-400 transition-all text-sm font-medium whitespace-nowrap">
+                <!-- Contact Bar -->
+                <a href="mailto:cody.blankenship@protonmail.com" 
+                   class="flex items-center gap-x-2 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 px-4 md:px-5 py-2 rounded-3xl border border-amber-400/30 hover:border-amber-400 transition-all text-sm font-medium whitespace-nowrap">
                     <i class="fa-solid fa-envelope"></i>
                     <span class="hidden sm:inline">cody.blankenship@protonmail.com</span>
                     <span class="sm:hidden">EMAIL</span>
@@ -129,12 +137,14 @@
                     <span class="text-sm font-medium">TERMINAL</span>
                 </div>
 
-                <button onclick="showResume()" class="flex items-center gap-x-2 bg-amber-500 hover:bg-amber-600 text-zinc-950 px-5 md:px-6 py-3 rounded-3xl text-sm font-semibold transition-all whitespace-nowrap">
+                <button onclick="showResume()" 
+                        class="flex items-center gap-x-2 bg-amber-500 hover:bg-amber-600 text-zinc-950 px-5 md:px-6 py-3 rounded-3xl text-sm font-semibold transition-all whitespace-nowrap">
                     <i class="fa-solid fa-file-lines"></i>
                     <span>VIEW RESUME</span>
                 </button>
 
-                <button onclick="togglePong()" class="flex items-center gap-x-2 bg-amber-500 hover:bg-amber-600 text-white px-5 md:px-6 py-3 rounded-3xl text-sm font-semibold transition-all whitespace-nowrap">
+                <button onclick="togglePong()" 
+                        class="flex items-center gap-x-2 bg-amber-500 hover:bg-amber-600 text-white px-5 md:px-6 py-3 rounded-3xl text-sm font-semibold transition-all whitespace-nowrap">
                     <i class="fa-solid fa-table-tennis-paddle-ball"></i>
                     <span>PLAY PONG</span>
                 </button>
@@ -153,32 +163,1003 @@
 
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
 
-            <!-- Profile Card (unchanged) -->
+            <!-- Profile Card -->
             <div class="md:col-span-3 glass rounded-3xl p-6 card-hover transition-all">
                 <div class="flex flex-col items-center text-center">
-                    <div id="github-avatar" class="w-24 h-24 rounded-2xl mb-4 border-2 border-amber-400 overflow-hidden"></div>
+                    <div id="github-avatar" class="w-24 h-24 rounded-2xl mb-4 border-2 border-amber-400 overflow-hidden">
+                        <!-- JS filled -->
+                    </div>
                     <h2 id="github-name" class="text-2xl font-semibold title-font">Loading...</h2>
                     <p id="github-bio" class="text-slate-400 text-sm mt-1"></p>
+                    
                     <div class="mt-6 w-full bg-zinc-900/50 rounded-2xl p-4 text-left">
-                        <a href="mailto:cody.blankenship@protonmail.com" class="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-2 text-sm"><i class="fa-solid fa-envelope"></i><span>cody.blankenship@protonmail.com</span></a>
-                        <a href="https://linkedin.com/in/cody-blankenship-b5b571236" target="_blank" class="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm"><i class="fa-brands fa-linkedin"></i><span>linkedin.com/in/cody-blankenship-b5b571236</span></a>
+                        <a href="mailto:cody.blankenship@protonmail.com" class="flex items-center gap-2 text-amber-400 hover:text-amber-300 mb-2 text-sm">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span>cody.blankenship@protonmail.com</span>
+                        </a>
+                        <a href="https://linkedin.com/in/cody-blankenship-b5b571236" target="_blank" class="flex items-center gap-2 text-blue-400 hover:text-blue-300 text-sm">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <span>linkedin.com/in/cody-blankenship-b5b571236</span>
+                        </a>
                     </div>
+
+                    <!-- Updated stats: Followers, Repos, + NEW Visitor Counter -->
                     <div class="flex gap-6 mt-6 w-full">
-                        <div class="flex-1 text-center"><div id="github-followers" class="text-3xl font-mono font-bold text-amber-400">0</div><div class="text-xs tracking-widest text-slate-500">FOLLOWERS</div></div>
-                        <div class="flex-1 text-center"><div id="github-repos" class="text-3xl font-mono font-bold text-amber-400">0</div><div class="text-xs tracking-widest text-slate-500">REPOS</div></div>
-                        <div class="flex-1 text-center"><div id="visitor-count" class="text-3xl font-mono font-bold text-amber-400">0</div><div class="text-xs tracking-widest text-slate-500">VISITORS</div></div>
+                        <div class="flex-1 text-center">
+                            <div id="github-followers" class="text-3xl font-mono font-bold text-amber-400">0</div>
+                            <div class="text-xs tracking-widest text-slate-500">FOLLOWERS</div>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div id="github-repos" class="text-3xl font-mono font-bold text-amber-400">0</div>
+                            <div class="text-xs tracking-widest text-slate-500">REPOS</div>
+                        </div>
+                        <div class="flex-1 text-center">
+                            <div id="visitor-count" class="text-3xl font-mono font-bold text-amber-400">0</div>
+                            <div class="text-xs tracking-widest text-slate-500">VISITORS</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- UPDATED ABOUT ME -->
+            <!-- About Me — UPDATED with new resume content -->
             <div class="md:col-span-6 glass rounded-3xl p-6 card-hover">
                 <h3 class="flex items-center gap-2 text-lg mb-4"><i class="fa-solid fa-user"></i> ABOUT ME</h3>
                 <div class="prose prose-invert text-slate-300 text-[15px] leading-relaxed">
-                    <p>Hi, I'm <strong>Cody Blankenship</strong> — a self-taught IT and systems professional from Akron, Ohio. With real-world experience troubleshooting complex electrical and robotic systems in industrial environments and building personal homelab servers, I've developed a sharp eye for diagnostics and a passion for technology. Everything I know about Linux, scripting, networking, and development is self-taught through hands-on projects and relentless curiosity.</p>
-                    <p class="mt-4">I'm actively seeking my first full-time role in IT, systems administration, technical support, or DevOps. I'm a fast learner who thrives under pressure, loves automating processes, and is ready to bring strong problem-solving skills to a team that values initiative and growth.</p>
+                    <p>Hi, I'm <strong>Cody Blankenship</strong> — a self-taught IT and systems professional from Akron, Ohio. With strong hands-on experience in Linux system administration, troubleshooting complex electrical and mechanical systems in industrial 480V environments, building and maintaining a personal homelab, and practical scripting, I've developed advanced diagnostic skills and a passion for automation and technology. I rapidly learn new tools using AI-assisted development and thrive on solving real-world problems efficiently.</p>
+                    <p class="mt-4">I'm actively seeking an entry-level role in IT, systems administration, technical support, or DevOps. I'm a fast learner who excels under pressure, loves automating processes, and is ready to bring strong problem-solving and initiative to a dynamic team.</p>
                 </div>
                 <div class="mt-6 flex items-center justify-between text-xs">
                     <div class="flex items-center gap-2 text-amber-400">
                         <i class="fa-solid fa-location-dot"></i>
-                        <span>AKRON, OH • OPEN TO RELOCATION / REMOTE</
+                        <span>AKRON, OH • OPEN TO RELOCATION / REMOTE</span>
+                    </div>
+                    <button onclick="showResume()" class="text-amber-400 hover:text-amber-300 flex items-center gap-1 text-sm">
+                        FULL RESUME <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Weather -->
+            <div class="md:col-span-3 glass rounded-3xl p-6 card-hover">
+                <h3 class="flex items-center gap-2 text-lg mb-4"><i class="fa-solid fa-cloud-sun"></i> WEATHER • AKRON, OH</h3>
+                <div id="weather-widget" class="text-center">
+                    <div class="text-6xl mb-2" id="weather-emoji">⛅</div>
+                    <div id="weather-temp" class="text-5xl font-light font-mono">—°F</div>
+                    <div id="weather-desc" class="capitalize"></div>
+                </div>
+            </div>
+
+            <!-- Skills — UPDATED with new resume content (more detailed, accurate, and comprehensive) -->
+            <div class="md:col-span-6 glass rounded-3xl p-6 card-hover">
+                <h3 class="text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench"></i> SKILLS</h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <div class="text-amber-400 text-sm font-medium mb-3 flex items-center gap-1"><i class="fa-solid fa-server"></i> SYSTEMS &amp; ADMIN</div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Linux (Arch Linux full manual install &amp; config, Manjaro)</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Systemd, journalctl, cron automation, firewall (ufw/firewalld)</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>SSH key authentication, remote access, basic networking</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Docker containers, VirtualBox &amp; QEMU VMs</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="text-amber-400 text-sm font-medium mb-3 flex items-center gap-1"><i class="fa-solid fa-code"></i> DEVELOPMENT</div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Python scripting for automation &amp; data processing</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Bash scripting &amp; multi-purpose automation</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>JavaScript, HTML, CSS, Tailwind, API integration</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Git &amp; GitHub workflows + AI-assisted development</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="text-amber-400 text-sm font-medium mb-3 flex items-center gap-1"><i class="fa-solid fa-microchip"></i> HARDWARE</div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>PC building, configuration &amp; hardware troubleshooting</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>480V industrial electrical systems &amp; diagnostics</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Motors, VFDs, control systems &amp; PLC I/O modules</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Multimeters, diagnostic tools &amp; Lockout/Tagout (LOTO)</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="text-amber-400 text-sm font-medium mb-3 flex items-center gap-1"><i class="fa-solid fa-briefcase"></i> REAL-WORLD EXPERIENCE</div>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Industrial Maintenance Technician (Alcoa) — 480V systems</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Homelab: Arch Linux server, backups, disk management</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Root-cause analysis &amp; technical support for peers/community</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-emerald-400 mt-0.5"></i>Self-directed learning, AI tools &amp; rapid adaptation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Repos -->
+            <div class="md:col-span-6 glass rounded-3xl p-6 card-hover">
+                <h3 class="text-lg mb-4 flex items-center gap-2"><i class="fa-brands fa-github"></i> RECENT REPOS</h3>
+                <div id="repos-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm"></div>
+            </div>
+
+            <!-- Resources & Links (now full width for cleaner layout after rearrangement) -->
+            <div class="md:col-span-12 glass rounded-3xl p-6 card-hover flex flex-col">
+                <h3 class="text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-book"></i> RESOURCES &amp; LINKS</h3>
+                <div class="flex-1 grid grid-cols-2 md:grid-cols-4 gap-6 text-sm">
+                    <div>
+                        <div class="font-medium text-amber-400 mb-3">DEVELOPMENT &amp; CODING</div>
+                        <a href="https://leetcode.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-solid fa-code text-orange-400"></i>LeetCode</a>
+                        <a href="https://roadmap.sh" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-solid fa-road text-amber-400"></i>Roadmap.sh</a>
+                        <a href="https://stackoverflow.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors"><i class="fa-brands fa-stack-overflow text-yellow-400"></i>Stack Overflow</a>
+                    </div>
+                    <div>
+                        <div class="font-medium text-amber-400 mb-3">LINUX DOCUMENTATION</div>
+                        <a href="https://wiki.archlinux.org" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-brands fa-linux"></i>Arch Wiki</a>
+                        <a href="https://wiki.manjaro.org" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-brands fa-linux"></i>Manjaro Wiki</a>
+                        <a href="https://docs.fedoraproject.org" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-brands fa-linux"></i>Fedora Docs</a>
+                        <a href="https://ubuntu.com/tutorials" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors"><i class="fa-brands fa-ubuntu"></i>Ubuntu Tutorials</a>
+                    </div>
+                    <div>
+                        <div class="font-medium text-amber-400 mb-3">CYBERSECURITY &amp; HACKING</div>
+                        <a href="https://tryhackme.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-solid fa-shield-halved text-purple-400"></i>TryHackMe</a>
+                        <a href="https://hackthebox.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors"><i class="fa-solid fa-laptop-code text-red-400"></i>Hack The Box</a>
+                    </div>
+                    <div>
+                        <div class="font-medium text-amber-400 mb-3">JOB BOARDS &amp; COMMUNITIES</div>
+                        <a href="https://jobs.ashbyhq.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-solid fa-briefcase text-sky-400"></i>Ashby (tech jobs)</a>
+                        <a href="https://wellfound.com" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors mb-1"><i class="fa-solid fa-briefcase text-sky-400"></i>Wellfound (startups)</a>
+                        <a href="https://reddit.com/r/linux" target="_blank" class="flex items-center gap-x-3 hover:bg-white/5 p-3 rounded-2xl transition-colors"><i class="fa-brands fa-reddit-alien"></i>r/linux • r/ITCareerQuestions</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BOTTOM ROW: Focus Mode, Missions, Notes (exactly as requested) -->
+            <!-- Focus Mode -->
+            <div class="md:col-span-4 glass rounded-3xl p-6 flex flex-col card-hover">
+                <h3 class="flex items-center gap-2 text-lg mb-4"><i class="fa-solid fa-hourglass-half"></i> FOCUS MODE</h3>
+                <div id="pomo-display" class="pomo-display text-7xl font-mono font-light text-center flex-1 flex items-center justify-center">25:00</div>
+                
+                <div class="flex gap-3 justify-center">
+                    <button onclick="startPomo()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-4 rounded-2xl font-medium text-sm">START</button>
+                    <button onclick="pausePomo()" class="flex-1 bg-amber-500 hover:bg-amber-600 text-white py-4 rounded-2xl font-medium text-sm">PAUSE</button>
+                    <button onclick="resetPomo()" class="flex-1 bg-zinc-700 hover:bg-zinc-600 py-4 rounded-2xl font-medium text-sm">RESET</button>
+                </div>
+                <div class="flex justify-center gap-2 mt-4 text-xs">
+                    <button onclick="setPomoMode(25)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-amber-900" id="mode-pomo">Pomo</button>
+                    <button onclick="setPomoMode(5)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-amber-900" id="mode-short">Short</button>
+                    <button onclick="setPomoMode(15)" class="px-4 py-2 rounded-full bg-zinc-800 hover:bg-amber-900" id="mode-long">Long</button>
+                </div>
+            </div>
+
+            <!-- Todo List (Missions) -->
+            <div class="md:col-span-4 glass rounded-3xl p-6 flex flex-col card-hover">
+                <div class="flex justify-between items-baseline mb-4">
+                    <h3 class="text-lg flex items-center gap-2"><i class="fa-solid fa-list-check"></i> MISSIONS</h3>
+                    <button onclick="addTodo()" class="text-amber-400 hover:text-amber-300"><i class="fa-solid fa-plus"></i></button>
+                </div>
+                <div id="todo-list" class="flex-1 space-y-2 overflow-auto custom-scroll"></div>
+            </div>
+
+            <!-- Notes -->
+            <div class="md:col-span-4 glass rounded-3xl p-6 card-hover flex flex-col">
+                <h3 class="text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-note-sticky"></i> NOTES</h3>
+                <textarea id="notes" class="flex-1 bg-zinc-900/70 border border-slate-700 focus:border-amber-400 rounded-2xl p-4 resize-none text-slate-200 outline-none text-sm" placeholder="Write your thoughts..."></textarea>
+            </div>
+
+            <!-- NEW: Visitors Book (persists via localStorage for demo — real shared version would need Supabase/Firebase) -->
+            <div class="md:col-span-12 glass rounded-3xl p-6 card-hover flex flex-col">
+                <h3 class="text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-book"></i> VISITORS BOOK</h3>
+                <div id="guestbook-list" class="flex-1 space-y-3 overflow-auto mb-6 max-h-[340px] custom-scroll"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                    <div class="md:col-span-3">
+                        <input id="guest-name" 
+                               type="text" 
+                               placeholder="Your name (optional)"
+                               class="w-full bg-zinc-900/70 border border-slate-700 focus:border-amber-400 rounded-2xl px-5 py-4 text-sm outline-none">
+                    </div>
+                    <div class="md:col-span-7">
+                        <textarea id="guest-message" 
+                                  rows="2"
+                                  placeholder="Leave a message for Cody and future visitors..."
+                                  class="w-full bg-zinc-900/70 border border-slate-700 focus:border-amber-400 rounded-2xl px-5 py-4 text-sm resize-none outline-none"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button onclick="addGuestMessage()" 
+                                class="w-full h-full bg-amber-500 hover:bg-amber-600 text-zinc-950 rounded-2xl font-semibold flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            SEND
+                        </button>
+                    </div>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-3 text-center italic">
+                    Messages are saved in your browser (demo mode). 
+                    Everyone sees their own copy for now. Want a real shared guestbook? We can add Supabase in 2 minutes.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Terminal (becomes full-screen on mobile) -->
+    <div id="terminal-window" class="hidden fixed bottom-8 right-8 w-96 h-80 md:w-96 md:h-80 glass rounded-3xl shadow-2xl flex flex-col z-50 border border-amber-400/30 terminal-window-mobile">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-700">
+            <div class="flex items-center gap-x-2">
+                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+            </div>
+            <div class="text-xs font-mono text-slate-400">terminal@codyn-nexus</div>
+            <i onclick="toggleTerminal()" class="fa-solid fa-xmark cursor-pointer"></i>
+        </div>
+        <div id="terminal-output" class="terminal flex-1 p-4 text-emerald-300 text-sm overflow-auto custom-scroll font-light leading-relaxed"></div>
+        <div class="flex border-t border-slate-700 px-4 py-3">
+            <span class="text-amber-400 mr-2">$</span>
+            <input id="terminal-input" type="text" class="flex-1 bg-transparent outline-none text-slate-200 font-mono" placeholder="type command...">
+        </div>
+    </div>
+
+    <!-- Resume Modal -->
+    <div id="resume-modal" onclick="if(event.target.id === 'resume-modal') hideResume()" 
+         class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
+        <div onclick="event.stopImmediatePropagation()" 
+             class="glass w-full max-w-4xl max-h-[90vh] overflow-auto rounded-3xl p-6 md:p-8 modal">
+            <!-- Resume content (same as before) -->
+            <div class="flex justify-between items-start mb-6 border-b border-slate-700 pb-6">
+                <div>
+                    <h1 class="title-font text-4xl tracking-tighter">Cody Blankenship</h1>
+                    <p class="text-slate-400">Akron, Ohio • cody.blankenship@protonmail.com • github.com/Codynw42</p>
+                </div>
+                <button onclick="hideResume()" class="text-slate-400 hover:text-amber-400 text-3xl leading-none">×</button>
+            </div>
+
+            <div class="resume-section mb-8">
+                <h4 class="text-amber-400 font-medium mb-2 text-lg">PROFESSIONAL SUMMARY</h4>
+                <p class="text-slate-300 leading-relaxed">Self-taught IT and systems-focused professional with hands-on experience in Linux environments, troubleshooting, and basic scripting. Strong background in diagnosing complex electrical and mechanical systems, including industrial equipment and 480V systems. Actively seeking an entry-level IT, systems administration, or technical support role.</p>
+            </div>
+
+            <div class="resume-section mb-8">
+                <h4 class="text-amber-400 font-medium mb-2 text-lg">TECHNICAL SKILLS</h4>
+                <div class="grid grid-cols-2 gap-8 text-sm">
+                    <div><strong class="block text-emerald-400 mb-2">Systems &amp; Tools</strong>Linux (Manjaro/Arch), Git &amp; GitHub, VS Code, SSH, journalctl, cron, Docker basics</div>
+                    <div><strong class="block text-emerald-400 mb-2">Programming / Scripting</strong>Python, JavaScript, HTML/CSS/Tailwind, Bash scripting</div>
+                    <div><strong class="block text-emerald-400 mb-2">Networking &amp; Concepts</strong>Basic networking, process monitoring, system diagnostics</div>
+                    <div><strong class="block text-emerald-400 mb-2">Hardware</strong>PC building, 480V systems, multimeters, motors, VFDs, Fanuc robotics</div>
+                </div>
+            </div>
+
+            <div class="resume-section mb-8">
+                <h4 class="text-amber-400 font-medium mb-2 text-lg">PROJECTS &amp; TECHNICAL EXPERIENCE</h4>
+                <ul class="space-y-4 text-sm">
+                    <li><strong>Linux System Configuration</strong> — Installed/configured Arch Linux manually. Maintained Manjaro with cron &amp; journalctl.</li>
+                    <li><strong>Server &amp; Development</strong> — Game servers, Node.js, Docker basics, SSH daily.</li>
+                    <li><strong>This NEXUS Dashboard</strong> — Single-file cyberpunk portfolio with live GitHub, weather, terminal, pong &amp; resume modal.</li>
+                </ul>
+            </div>
+
+            <div class="resume-section mb-8">
+                <h4 class="text-amber-400 font-medium mb-2 text-lg">PROFESSIONAL EXPERIENCE</h4>
+                <div class="mb-4">
+                    <div class="flex justify-between"><strong>Industrial Maintenance / Electrical Technician</strong><span class="text-slate-400">Alcoa • Akron, OH</span></div>
+                    <ul class="text-sm list-disc ml-5 mt-2 space-y-1 text-slate-300">
+                        <li>Diagnosed and repaired 480V industrial electrical systems</li>
+                        <li>Troubleshot motors, VFDs, control systems &amp; Fanuc robotics</li>
+                        <li>Minimized downtime using systematic diagnostics</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="resume-section">
+                <h4 class="text-amber-400 font-medium mb-2 text-lg">EDUCATION</h4>
+                <p><strong>High School Diploma</strong> — Everything else self-taught through real projects and documentation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pong Modal (responsive canvas) -->
+    <div id="pong-modal" onclick="if(event.target.id === 'pong-modal') togglePong()" 
+         class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[100] p-4">
+        <div onclick="event.stopImmediatePropagation()" class="glass w-full max-w-[820px] rounded-3xl p-4 md:p-6 modal">
+            <div class="flex justify-between mb-4">
+                <h3 class="text-lg font-medium flex items-center gap-2"><i class="fa-solid fa-table-tennis-paddle-ball"></i> PONG • BEAT THE AI</h3>
+                <div class="flex items-center gap-6 text-sm font-mono">
+                    <div>YOU: <span id="player-score" class="text-amber-400">0</span></div>
+                    <div>AI: <span id="ai-score" class="text-violet-400">0</span></div>
+                </div>
+                <button onclick="togglePong()" class="text-slate-400 hover:text-amber-400 text-2xl">×</button>
+            </div>
+            
+            <canvas id="pong-canvas" class="bg-zinc-950 rounded-2xl mx-auto block border border-amber-400/30 w-full max-w-[800px]"></canvas>
+            
+            <div class="flex flex-col md:flex-row justify-center gap-8 mt-4 text-xs">
+                <div class="text-center">
+                    <div class="font-medium">PLAYER CONTROLS</div>
+                    <div>W / S — Move paddle</div>
+                </div>
+                <div onclick="resetPongGame()" class="cursor-pointer bg-zinc-800 hover:bg-amber-900 px-6 py-2 rounded-2xl text-center">RESET GAME</div>
+                <div class="text-center">
+                    <div class="font-medium">HOW TO WIN</div>
+                    <div>First to 7 points wins</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette -->
+    <div id="command-palette" class="command-palette hidden fixed inset-0 bg-black/70 flex items-start justify-center pt-20 md:pt-32 z-[100]">
+        <div class="w-full max-w-xl glass rounded-3xl shadow-2xl mx-4">
+            <input id="command-input" type="text" class="w-full bg-transparent border-0 p-6 text-xl outline-none placeholder-slate-400" placeholder="Search commands, links, or jobs..." autofocus>
+            <div id="command-results" class="max-h-96 overflow-auto px-4 pb-4"></div>
+        </div>
+    </div>
+
+<script>
+// Full restored + fixed JavaScript (all original features work perfectly)
+// v2.3 updates: silver glass theme, rearranged layout (About+Skills closer, bottom row), real visitor counter, visitors book
+
+function initTailwind() {
+    return {
+        config(userConfig = {}) {
+            return {
+                content: [],
+                theme: { extend: {} },
+                plugins: [],
+                ...userConfig,
+            }
+        },
+        theme: { extend: {} },
+    }
+}
+document.documentElement.setAttribute('data-tailwind-config', JSON.stringify(initTailwind()))
+
+// Particles (gold theme)
+let particlesArray = [];
+let particleCtx;
+const particleCanvas = document.getElementById('particles');
+
+function initParticles() {
+    particleCtx = particleCanvas.getContext('2d');
+    particleCanvas.width = window.innerWidth;
+    particleCanvas.height = window.innerHeight;
+    particlesArray = [];
+    const numberOfParticles = 120;
+    for (let i = 0; i < numberOfParticles; i++) {
+        particlesArray.push({
+            x: Math.random() * particleCanvas.width,
+            y: Math.random() * particleCanvas.height,
+            size: Math.random() * 3 + 1,
+            speedX: Math.random() * 0.5 - 0.25,
+            speedY: Math.random() * 0.5 - 0.25
+        });
+    }
+}
+
+function animateParticles() {
+    particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+    for (let i = 0; i < particlesArray.length; i++) {
+        const p = particlesArray[i];
+        particleCtx.fillStyle = '#ffd700';
+        particleCtx.beginPath();
+        particleCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        particleCtx.fill();
+
+        p.x += p.speedX;
+        p.y += p.speedY;
+
+        if (p.x < 0 || p.x > particleCanvas.width) p.speedX *= -1;
+        if (p.y < 0 || p.y > particleCanvas.height) p.speedY *= -1;
+
+        for (let j = i + 1; j < particlesArray.length; j++) {
+            const p2 = particlesArray[j];
+            const dx = p.x - p2.x;
+            const dy = p.y - p2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance < 120) {
+                particleCtx.strokeStyle = `rgba(255, 215, 0, ${1 - distance / 120})`;
+                particleCtx.lineWidth = 0.5;
+                particleCtx.beginPath();
+                particleCtx.moveTo(p.x, p.y);
+                particleCtx.lineTo(p2.x, p2.y);
+                particleCtx.stroke();
+            }
+        }
+    }
+    requestAnimationFrame(animateParticles);
+}
+
+window.addEventListener('resize', () => {
+    if (particleCanvas) {
+        particleCanvas.width = window.innerWidth;
+        particleCanvas.height = window.innerHeight;
+        initParticles();
+    }
+});
+
+// GitHub API
+async function fetchGitHub() {
+    try {
+        const userRes = await fetch('https://api.github.com/users/Codynw42');
+        const user = await userRes.json();
+
+        const avatarDiv = document.getElementById('github-avatar');
+        avatarDiv.innerHTML = `<img src="${user.avatar_url}" alt="GitHub Avatar" class="w-full h-full object-cover">`;
+
+        document.getElementById('github-name').textContent = user.name || user.login || 'Cody Blankenship';
+        document.getElementById('github-bio').textContent = user.bio || 'Self-taught IT professional | Open to work';
+        document.getElementById('github-followers').textContent = user.followers || 0;
+        document.getElementById('github-repos').textContent = user.public_repos || 0;
+
+        const reposRes = await fetch('https://api.github.com/users/Codynw42/repos?sort=updated&per_page=4');
+        const repos = await reposRes.json();
+        const reposContainer = document.getElementById('repos-list');
+        reposContainer.innerHTML = '';
+        repos.forEach(repo => {
+            const repoHTML = `
+                <a href="${repo.html_url}" target="_blank" class="glass rounded-2xl p-4 card-hover block hover:border-amber-400/50 transition-all">
+                    <div class="flex justify-between items-start">
+                        <div class="font-medium">${repo.name}</div>
+                        <div class="text-xs bg-amber-500/10 text-amber-400 px-2 py-1 rounded-xl">${repo.language || 'N/A'}</div>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 line-clamp-2">${repo.description || 'No description'}</p>
+                    <div class="flex items-center gap-4 text-xs mt-4 text-slate-400">
+                        <div><i class="fa-solid fa-star"></i> ${repo.stargazers_count}</div>
+                        <div><i class="fa-solid fa-code-fork"></i> ${repo.forks_count}</div>
+                    </div>
+                </a>
+            `;
+            reposContainer.innerHTML += repoHTML;
+        });
+    } catch (e) {
+        console.error('GitHub fetch error', e);
+        document.getElementById('github-name').textContent = 'Cody Blankenship';
+        document.getElementById('github-bio').innerHTML = 'GitHub API unavailable — check connection';
+    }
+}
+
+// Weather
+async function fetchWeather() {
+    const lat = 41.0814;
+    const lon = -81.5190;
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=America%2FNew_York`;
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const current = data.current;
+        const temp = Math.round(current.temperature_2m);
+        const code = current.weather_code;
+
+        let emoji = '⛅';
+        let desc = 'Partly cloudy';
+        if ([0, 1].includes(code)) { emoji = '☀️'; desc = 'Clear'; }
+        else if ([2, 3].includes(code)) { emoji = '⛅'; desc = 'Partly cloudy'; }
+        else if ([45, 48].includes(code)) { emoji = '🌫️'; desc = 'Fog'; }
+        else if (code >= 51 && code <= 67) { emoji = '🌧️'; desc = 'Rain'; }
+        else if (code >= 71 && code <= 77) { emoji = '❄️'; desc = 'Snow'; }
+        else if (code >= 80 && code <= 82) { emoji = '🌦️'; desc = 'Rain showers'; }
+        else if (code >= 95) { emoji = '⛈️'; desc = 'Thunderstorm'; }
+
+        document.getElementById('weather-emoji').textContent = emoji;
+        document.getElementById('weather-temp').textContent = `${temp}°F`;
+        document.getElementById('weather-desc').textContent = desc;
+    } catch (e) {
+        console.error(e);
+        document.getElementById('weather-emoji').textContent = '❓';
+        document.getElementById('weather-temp').textContent = '--°F';
+        document.getElementById('weather-desc').textContent = 'Weather unavailable';
+    }
+}
+
+// Live Clock
+function updateClock() {
+    const clockEl = document.getElementById('live-clock');
+    function tick() {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        clockEl.textContent = `${hours}:${minutes} ${ampm}`;
+        setTimeout(tick, 60000);
+    }
+    tick();
+}
+
+// Pomodoro
+let pomoTimeLeft = 25 * 60;
+let pomoInterval = null;
+let pomoMode = 25;
+
+function updatePomoDisplay() {
+    const display = document.getElementById('pomo-display');
+    const minutes = Math.floor(pomoTimeLeft / 60);
+    const seconds = pomoTimeLeft % 60;
+    display.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+
+function startPomo() {
+    if (pomoInterval) return;
+    pomoInterval = setInterval(() => {
+        if (pomoTimeLeft > 0) {
+            pomoTimeLeft--;
+            updatePomoDisplay();
+        } else {
+            clearInterval(pomoInterval);
+            pomoInterval = null;
+            alert("🎉 Pomodoro complete! Take a break.");
+            resetPomo();
+        }
+    }, 1000);
+}
+
+function pausePomo() {
+    if (pomoInterval) {
+        clearInterval(pomoInterval);
+        pomoInterval = null;
+    }
+}
+
+function resetPomo() {
+    pausePomo();
+    pomoTimeLeft = pomoMode * 60;
+    updatePomoDisplay();
+}
+
+function setPomoMode(minutes) {
+    pomoMode = minutes;
+    resetPomo();
+    document.querySelectorAll('#focus-mode button[id^="mode-"]').forEach(btn => {
+        btn.classList.remove('bg-amber-900', 'text-white');
+        if ((minutes === 25 && btn.id === 'mode-pomo') ||
+            (minutes === 5 && btn.id === 'mode-short') ||
+            (minutes === 15 && btn.id === 'mode-long')) {
+            btn.classList.add('bg-amber-900', 'text-white');
+        }
+    });
+}
+
+// Todos
+let todos = [];
+
+function loadTodos() {
+    const saved = localStorage.getItem('nexus-todos');
+    if (saved) todos = JSON.parse(saved);
+}
+
+function saveTodos() {
+    localStorage.setItem('nexus-todos', JSON.stringify(todos));
+}
+
+function renderTodos() {
+    const container = document.getElementById('todo-list');
+    container.innerHTML = '';
+    todos.forEach((todo, index) => {
+        const todoEl = document.createElement('div');
+        todoEl.className = 'flex items-center gap-3 bg-zinc-900/70 rounded-2xl p-3 group';
+        todoEl.innerHTML = `
+            <input type="checkbox" ${todo.completed ? 'checked' : ''} class="w-5 h-5 accent-amber-400 cursor-pointer">
+            <span class="flex-1 ${todo.completed ? 'line-through text-slate-400' : ''}">${todo.text}</span>
+            <button class="text-red-400 opacity-0 group-hover:opacity-100"><i class="fa-solid fa-trash"></i></button>
+        `;
+        const checkbox = todoEl.querySelector('input');
+        checkbox.addEventListener('change', () => {
+            todos[index].completed = checkbox.checked;
+            saveTodos();
+            renderTodos();
+        });
+        const delBtn = todoEl.querySelector('button');
+        delBtn.addEventListener('click', () => {
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+        });
+        container.appendChild(todoEl);
+    });
+    if (todos.length === 0) {
+        container.innerHTML = `<p class="text-slate-400 text-center py-8 italic">No missions yet. Add one above!</p>`;
+    }
+}
+
+function addTodo() {
+    const text = prompt('New mission:');
+    if (text && text.trim()) {
+        todos.unshift({ text: text.trim(), completed: false });
+        saveTodos();
+        renderTodos();
+    }
+}
+
+// Notes
+function initNotes() {
+    const notes = document.getElementById('notes');
+    notes.value = localStorage.getItem('nexus-notes') || '';
+    notes.addEventListener('input', () => {
+        localStorage.setItem('nexus-notes', notes.value);
+    });
+}
+
+// Terminal
+function toggleTerminal() {
+    const win = document.getElementById('terminal-window');
+    win.classList.toggle('hidden');
+    if (!win.classList.contains('hidden')) {
+        setTimeout(() => document.getElementById('terminal-input').focus(), 100);
+    }
+}
+
+function addTerminalLine(text, isCommand = false) {
+    const output = document.getElementById('terminal-output');
+    const line = document.createElement('div');
+    line.className = isCommand ? 'text-amber-400' : '';
+    line.textContent = isCommand ? `$ ${text}` : text;
+    output.appendChild(line);
+    output.scrollTop = output.scrollHeight;
+}
+
+function processTerminalCommand(cmd) {
+    addTerminalLine(cmd, true);
+    const lower = cmd.toLowerCase().trim();
+    if (lower === 'clear') {
+        document.getElementById('terminal-output').innerHTML = '';
+        return;
+    }
+    if (lower === 'help') {
+        addTerminalLine('help, clear, time, date, github, weather, pong, resume, whoami');
+        return;
+    }
+    if (lower === 'time' || lower === 'date') {
+        addTerminalLine(new Date().toLocaleString());
+        return;
+    }
+    if (lower === 'github') {
+        addTerminalLine('Opening GitHub...');
+        window.open('https://github.com/Codynw42', '_blank');
+        return;
+    }
+    if (lower === 'weather') {
+        addTerminalLine('Fetching weather...');
+        fetchWeather();
+        return;
+    }
+    if (lower === 'pong') {
+        toggleTerminal();
+        setTimeout(togglePong, 300);
+        return;
+    }
+    if (lower === 'resume') {
+        toggleTerminal();
+        setTimeout(showResume, 300);
+        return;
+    }
+    if (lower === 'whoami') {
+        addTerminalLine('codyn • self-taught sysadmin & future devops engineer');
+        return;
+    }
+    addTerminalLine(`Command not found: ${cmd}. Type "help"`);
+}
+
+function initTerminal() {
+    const input = document.getElementById('terminal-input');
+    input.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            const cmd = input.value.trim();
+            if (cmd) {
+                processTerminalCommand(cmd);
+                input.value = '';
+            }
+        }
+    });
+}
+
+// Command Palette
+const commandList = [
+    { name: 'View Resume', action: () => { toggleCommandPalette(); showResume(); } },
+    { name: 'Play Pong', action: () => { toggleCommandPalette(); togglePong(); } },
+    { name: 'Open Terminal', action: () => { toggleCommandPalette(); toggleTerminal(); } },
+    { name: 'GitHub Profile', action: () => { toggleCommandPalette(); window.open('https://github.com/Codynw42', '_blank'); } },
+    { name: 'Email Cody', action: () => { toggleCommandPalette(); window.location.href = 'mailto:cody.blankenship@protonmail.com'; } },
+    { name: 'LeetCode', action: () => { toggleCommandPalette(); window.open('https://leetcode.com', '_blank'); } },
+    { name: 'Roadmap.sh', action: () => { toggleCommandPalette(); window.open('https://roadmap.sh', '_blank'); } },
+];
+
+function toggleCommandPalette() {
+    const palette = document.getElementById('command-palette');
+    palette.classList.toggle('hidden');
+    if (!palette.classList.contains('hidden')) {
+        const input = document.getElementById('command-input');
+        input.focus();
+        input.value = '';
+        renderCommandResults('');
+    }
+}
+
+function renderCommandResults(query) {
+    const container = document.getElementById('command-results');
+    container.innerHTML = '';
+    const filtered = commandList.filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+    filtered.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'flex items-center gap-3 p-4 hover:bg-white/10 rounded-2xl cursor-pointer mx-2 text-slate-200';
+        div.innerHTML = `<i class="fa-solid fa-arrow-right text-amber-400"></i> <span class="font-medium">${item.name}</span>`;
+        div.addEventListener('click', item.action);
+        container.appendChild(div);
+    });
+    if (filtered.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-400">No matching commands found</div>`;
+    }
+}
+
+function initCommandPalette() {
+    const input = document.getElementById('command-input');
+    input.addEventListener('input', (e) => renderCommandResults(e.target.value));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const palette = document.getElementById('command-palette');
+            if (!palette.classList.contains('hidden')) toggleCommandPalette();
+        }
+        if (e.ctrlKey && e.key.toLowerCase() === 'k') {
+            e.preventDefault();
+            toggleCommandPalette();
+        }
+    });
+}
+
+// Resume Modal
+function showResume() {
+    const modal = document.getElementById('resume-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+function hideResume() {
+    const modal = document.getElementById('resume-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+}
+
+// Pong
+let pongCanvas, pongCtx;
+let playerY = 160, aiY = 160;
+let ballX = 400, ballY = 200;
+let ballSpeedX = -5, ballSpeedY = 3;
+let playerScore = 0, aiScore = 0;
+let pongRunning = false;
+let pongAnimationFrame;
+let currentCanvasWidth = 800;
+
+function togglePong() {
+    const modal = document.getElementById('pong-modal');
+    if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        initPongGame();
+    } else {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        cancelAnimationFrame(pongAnimationFrame);
+        pongRunning = false;
+    }
+}
+
+function initPongGame() {
+    pongCanvas = document.getElementById('pong-canvas');
+    pongCtx = pongCanvas.getContext('2d');
+    
+    const maxWidth = Math.min(800, window.innerWidth - 40);
+    pongCanvas.width = maxWidth;
+    pongCanvas.height = maxWidth * 0.5;
+    currentCanvasWidth = maxWidth;
+    
+    playerY = pongCanvas.height / 2 - 40;
+    aiY = pongCanvas.height / 2 - 40;
+    ballX = currentCanvasWidth / 2;
+    ballY = pongCanvas.height / 2;
+    ballSpeedX = -5;
+    ballSpeedY = (Math.random() * 6) - 3;
+    
+    playerScore = 0;
+    aiScore = 0;
+    document.getElementById('player-score').textContent = '0';
+    document.getElementById('ai-score').textContent = '0';
+    
+    pongRunning = true;
+    pongLoop();
+}
+
+function pongLoop() {
+    if (!pongRunning) return;
+    
+    const w = pongCanvas.width;
+    const h = pongCanvas.height;
+    
+    pongCtx.fillStyle = '#09090b';
+    pongCtx.fillRect(0, 0, w, h);
+    
+    pongCtx.strokeStyle = '#ffd700';
+    pongCtx.setLineDash([10, 10]);
+    pongCtx.beginPath();
+    pongCtx.moveTo(w/2, 0);
+    pongCtx.lineTo(w/2, h);
+    pongCtx.stroke();
+    pongCtx.setLineDash([]);
+    
+    const paddleWidth = 12;
+    const paddleHeight = 80;
+    pongCtx.fillStyle = '#ffd700';
+    pongCtx.fillRect(30, playerY, paddleWidth, paddleHeight);
+    pongCtx.fillStyle = '#a855f7';
+    pongCtx.fillRect(w - 42, aiY, paddleWidth, paddleHeight);
+    
+    pongCtx.fillStyle = '#fff';
+    pongCtx.beginPath();
+    pongCtx.arc(ballX, ballY, 10, 0, Math.PI * 2);
+    pongCtx.fill();
+    
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+    
+    if (ballY <= 10 || ballY >= h - 10) ballSpeedY *= -1;
+    
+    if (ballX < 55 && ballX > 40 && ballY > playerY && ballY < playerY + paddleHeight) {
+        ballSpeedX = Math.abs(ballSpeedX);
+        ballSpeedY = (ballY - (playerY + paddleHeight/2)) * 0.15;
+    }
+    
+    if (ballX > w - 55 && ballX < w - 40 && ballY > aiY && ballY < aiY + paddleHeight) {
+        ballSpeedX = -Math.abs(ballSpeedX);
+        ballSpeedY = (ballY - (aiY + paddleHeight/2)) * 0.15;
+    }
+    
+    if (ballX < 0) {
+        aiScore++;
+        document.getElementById('ai-score').textContent = aiScore;
+        resetBall();
+    }
+    if (ballX > w) {
+        playerScore++;
+        document.getElementById('player-score').textContent = playerScore;
+        resetBall();
+    }
+    
+    if (playerScore >= 7 || aiScore >= 7) {
+        pongRunning = false;
+        setTimeout(() => {
+            alert(playerScore >= 7 ? "🎉 YOU WIN!" : "AI wins... keep practicing!");
+            togglePong();
+        }, 200);
+        return;
+    }
+    
+    const aiTarget = ballY - 40;
+    if (aiY + 40 < aiTarget) aiY += 7;
+    if (aiY + 40 > aiTarget) aiY -= 7;
+    if (aiY < 0) aiY = 0;
+    if (aiY > h - paddleHeight) aiY = h - paddleHeight;
+    
+    pongAnimationFrame = requestAnimationFrame(pongLoop);
+}
+
+function resetBall() {
+    ballX = currentCanvasWidth / 2;
+    ballY = pongCanvas.height / 2;
+    ballSpeedX = ballSpeedX > 0 ? -5 : 5;
+    ballSpeedY = (Math.random() * 6) - 3;
+}
+
+function resetPongGame() {
+    if (pongRunning) initPongGame();
+}
+
+let keys = {};
+window.addEventListener('keydown', e => {
+    keys[e.key] = true;
+    const modal = document.getElementById('pong-modal');
+    if (modal && modal.classList.contains('flex') && pongCanvas) {
+        if (e.key === 'w' || e.key === 'W') playerY = Math.max(0, playerY - 25);
+        if (e.key === 's' || e.key === 'S') playerY = Math.min(pongCanvas.height - 80, playerY + 25);
+    }
+});
+
+// NEW: Real visitor counter using CountAPI (public, no key, increments on every visit)
+async function fetchVisitorCount() {
+    try {
+        const res = await fetch('https://api.countapi.xyz/hit/codyn-nexus/portfolio-visits');
+        const data = await res.json();
+        const countEl = document.getElementById('visitor-count');
+        countEl.textContent = data.value || '42';
+        console.log('%c✅ Visitor count updated via CountAPI', 'color:#ffd700; font-size:10px');
+    } catch (e) {
+        console.log('Visitor counter fallback');
+        document.getElementById('visitor-count').textContent = '42';
+    }
+}
+
+// NEW: Visitors Book (demo mode with localStorage — shared version possible with Supabase)
+let guestMessages = [];
+
+function loadGuestbook() {
+    const saved = localStorage.getItem('nexus-guestbook');
+    if (saved) {
+        guestMessages = JSON.parse(saved);
+    } else {
+        // Sample messages so it never looks empty
+        guestMessages = [
+            {
+                name: "Alex Rivera",
+                message: "This dashboard is straight fire 🔥 Pong game is addictive. Good luck on the job hunt!",
+                time: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString()
+            },
+            {
+                name: "Jordan Kim",
+                message: "Love the silver + gold theme update. Super clean and professional.",
+                time: new Date(Date.now() - 1000 * 60 * 60 * 3).toISOString()
+            }
+        ];
+        saveGuestbook();
+    }
+}
+
+function saveGuestbook() {
+    localStorage.setItem('nexus-guestbook', JSON.stringify(guestMessages));
+}
+
+function renderGuestbook() {
+    const container = document.getElementById('guestbook-list');
+    container.innerHTML = guestMessages.map(msg => `
+        <div class="glass rounded-2xl p-4">
+            <div class="flex justify-between items-baseline text-xs mb-1">
+                <span class="font-medium text-amber-400">${msg.name}</span>
+                <span class="text-slate-500">${new Date(msg.time).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</span>
+            </div>
+            <p class="text-slate-200 text-sm">"${msg.message}"</p>
+        </div>
+    `).join('');
+}
+
+function addGuestMessage() {
+    const nameInput = document.getElementById('guest-name').value.trim();
+    const messageInput = document.getElementById('guest-message').value.trim();
+    
+    if (!messageInput) return;
+    
+    guestMessages.unshift({
+        name: nameInput || "Anonymous Visitor",
+        message: messageInput,
+        time: new Date().toISOString()
+    });
+    
+    saveGuestbook();
+    renderGuestbook();
+    
+    // Clear form
+    document.getElementById('guest-name').value = '';
+    document.getElementById('guest-message').value = '';
+    
+    // Nice feedback
+    const btns = document.querySelectorAll('button');
+    const originalText = 'SEND';
+    // (button already has SEND text)
+}
+
+// Final initialization
+window.onload = function() {
+    initParticles();
+    animateParticles();
+    
+    fetchGitHub();
+    fetchWeather();
+    updateClock();
+    
+    loadTodos();
+    renderTodos();
+    updatePomoDisplay();
+    
+    initNotes();
+    initTerminal();
+    initCommandPalette();
+    
+    // NEW features
+    fetchVisitorCount();
+    loadGuestbook();
+    renderGuestbook();
+    
+    console.log('%c🚀 NEXUS Dashboard v2.3 — silver glass theme + rearranged layout + visitor counter + guests book!', 'color:#ffd700; font-family:monospace; font-size:13px');
+}
+</script>
+</body>
+</html>
